@@ -1,0 +1,73 @@
+{
+    "name": "composer-unused/symbol-parser",
+    "type": "library",
+    "description": "Toolkit to parse symbols from a composer package",
+    "keywords": [
+        "composer",
+        "symbol",
+        "parser"
+    ],
+    "homepage": "https://github.com/composer-unused/symbol-parser",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Frömer",
+            "email": "blubb0r05+github@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.3 || ^8.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.12.68",
+        "phpunit/phpunit": "^9.5.1",
+        "roave/security-advisories": "dev-master",
+        "squizlabs/php_codesniffer": "^3.5.8"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ComposerUnused\\Symbol\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ComposerUnused\\Symbol\\Test\\": "tests/Unit"
+        }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --no-progress",
+        "check": [
+            "@cs-check",
+            "@analyse",
+            "@test"
+        ],
+        "cs-check": "phpcs --parallel=50",
+        "cs-fix": "phpcbf --parallel=50",
+        "test": "phpunit"
+    },
+    "scripts-descriptions": {
+        "analyse": "Use \"phpstan\" to the analyse static code. See phpstan.neon",
+        "check": "Check the coding covention and run the tests",
+        "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
+        "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
+        "test": "Use \"phpunit\" to run the tests. See phpunit.xml"
+    },
+    "support": {
+        "issues": "https://github.com/composer-unused/symbol-parser/issues",
+        "source": "https://github.com/composer-unused/symbol-parser"
+    },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://paypal.me/icanhazstring"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/icanhazstring"
+        }
+    ]
+}

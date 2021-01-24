@@ -1,0 +1,14 @@
+includes:
+	- vendor/jangregor/phpstan-prophecy/extension.neon
+
+parameters:
+    bootstrapFiles:
+        - phpunit.bootstrap.php
+    excludes_analyse:
+        - %currentWorkingDirectory%/tests/assets
+    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    paths:
+        - src/
+        - tests/
+    tmpDir: data
