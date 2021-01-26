@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Skeleton coding standard">
-    <description>Skeleton coding standard</description>
-
+<ruleset>
     <arg value="p"/>
     <arg name="colors"/>
     <arg name="cache" value="cs-check.json"/>
@@ -20,5 +18,4 @@
 
     <file>src</file>
     <file>tests</file>
-    <file>config</file>
 </ruleset>

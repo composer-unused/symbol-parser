@@ -16,7 +16,9 @@
         }
     ],
     "require": {
-        "php": ">=7.3 || ^8.0"
+        "php": ">=7.3 || ^8.0",
+        "composer/composer": "^2.0",
+        "nikic/php-parser": "^4.10"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12.68",
@@ -30,12 +32,13 @@
     },
     "autoload": {
         "psr-4": {
-            "ComposerUnused\\Symbol\\": "src"
+            "ComposerUnused\\SymbolParser\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ComposerUnused\\Symbol\\Test\\": "tests/Unit"
+            "ComposerUnused\\SymbolParser\\Test\\Unit\\": "tests/Unit",
+            "ComposerUnused\\SymbolParser\\Test\\Integration\\": "tests/Integration"
         }
     },
     "scripts": {

@@ -1,6 +1,3 @@
-includes:
-	- vendor/jangregor/phpstan-prophecy/extension.neon
-
 parameters:
     bootstrapFiles:
         - phpunit.bootstrap.php

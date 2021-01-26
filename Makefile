@@ -1,4 +1,4 @@
-CONTAINER=composer-unused-7.4
+CONTAINER=symbol-loader-7.4
 
 up:
 	docker-compose up -d
@@ -36,7 +36,7 @@ box:
 	docker exec -it $(CONTAINER) php box.phar compile
 
 ssh:
-	docker exec -it $(CONTAINER) /bin/bash
+	docker exec -it $(CONTAINER) /bin/sh
 
 %:
 	@true
