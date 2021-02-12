@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use ReflectionException;
 use ReflectionExtension;
 use ReflectionFunction;
+
 use function array_key_exists;
 
 final class UsedExtensionSymbolStrategy implements StrategyInterface

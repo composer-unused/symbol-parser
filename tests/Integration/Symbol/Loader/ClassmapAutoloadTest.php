@@ -15,6 +15,7 @@ use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use ComposerUnused\SymbolParser\Test\Integration\AbstractIntegrationTestCase;
 use Generator;
 use PhpParser\ParserFactory;
+
 use function array_merge;
 use function iterator_to_array;
 
