@@ -21,6 +21,7 @@
         "nikic/php-parser": "^4.10"
     },
     "require-dev": {
+        "ext-ds": "*",
         "phpstan/phpstan": "^0.12.68",
         "phpunit/phpunit": "^9.5.1",
         "roave/security-advisories": "dev-master",

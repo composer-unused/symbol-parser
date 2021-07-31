@@ -1,4 +1,4 @@
-CONTAINER=symbol-loader-7.4
+CONTAINER=symbol-parser-7.4
 
 up:
 	docker-compose up -d

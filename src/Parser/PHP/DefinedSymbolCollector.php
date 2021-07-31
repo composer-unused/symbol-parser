@@ -18,7 +18,7 @@ use function array_merge;
  *
  * These might be classes, functions or constants
  */
-final class DefinedSymbolCollector extends NodeVisitorAbstract implements SymbolCollectorInterface
+final class DefinedSymbolCollector extends AbstractCollector
 {
     /** @var string */
     private $namespace = '';
@@ -32,6 +32,8 @@ final class DefinedSymbolCollector extends NodeVisitorAbstract implements Symbol
 
     public function enterNode(Node $node)
     {
+        $this->followIncludes($node);
+
         if ($node instanceof Node\Stmt\Namespace_) {
             $this->namespace = $node->name . '\\';
             return null;

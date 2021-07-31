@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
+use Closure;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StrategyInterface;
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 
 use function array_merge;
 use function array_unique;
@@ -18,7 +18,7 @@ use function array_unique;
  *
  * These might be classes, functions or constants
  */
-class ConsumedSymbolCollector extends NodeVisitorAbstract implements SymbolCollectorInterface
+class ConsumedSymbolCollector extends AbstractCollector
 {
     /** @var array<string> */
     private $symbols = [];
@@ -37,6 +37,8 @@ class ConsumedSymbolCollector extends NodeVisitorAbstract implements SymbolColle
     {
         $symbols = [];
 
+        $this->followIncludes($node);
+
         foreach ($this->strategies as $strategy) {
             if (!$strategy->canHandle($node)) {
                 continue;
@@ -45,7 +47,7 @@ class ConsumedSymbolCollector extends NodeVisitorAbstract implements SymbolColle
             $symbols[] = $strategy->extractSymbolNames($node);
         }
 
-        if (count($symbols) !== 0) {
+        if (count($symbols) > 0) {
             $this->symbols = array_merge($this->symbols, ...$symbols);
         }
 

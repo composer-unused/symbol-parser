@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
+use Closure;
 use PhpParser\NodeVisitor;
 
 interface SymbolCollectorInterface extends NodeVisitor
@@ -17,4 +18,9 @@ interface SymbolCollectorInterface extends NodeVisitor
      * Reset all previously found symbols
      */
     public function reset(): void;
+
+    /**
+     * Callback to add include to the iterated file lists
+     */
+    public function followIncludesCallback(Closure $includeCallback): void;
 }
