@@ -18,7 +18,8 @@
     "require": {
         "php": ">=7.3 || ^8.0",
         "composer/composer": "^2.0",
-        "nikic/php-parser": "^4.10"
+        "nikic/php-parser": "^4.10",
+        "symfony/finder": "4.4 || ^5.3"
     },
     "require-dev": {
         "ext-ds": "*",

@@ -7,6 +7,10 @@
 
 ### Removed
 
+## [0.1.2] - 2021-08-01
+### Added
+- Added missing `symfony/finder` dependency
+
 ## [0.1.1] - 2021-08-01
 ### Fixed
 - Fixed issue with `require` or `include` statements
