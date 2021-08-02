@@ -22,5 +22,5 @@ interface SymbolCollectorInterface extends NodeVisitor
     /**
      * Callback to add include to the iterated file lists
      */
-    public function followIncludesCallback(Closure $includeCallback): void;
+    public function setFileIncludeCallback(Closure $includeCallback): void;
 }

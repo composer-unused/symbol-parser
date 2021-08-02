@@ -7,6 +7,11 @@
 
 ### Removed
 
+## [0.1.3] - 2021-08-02
+### Fixed
+- Fix issue with parsed include expression where there could be concat operations
+  resulting in wrong path usages for included files to parse
+
 ## [0.1.2] - 2021-08-01
 ### Added
 - Added missing `symfony/finder` dependency

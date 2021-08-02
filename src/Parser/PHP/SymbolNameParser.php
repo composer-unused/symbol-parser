@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
 use ArrayIterator;
-use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
+use Closure;
+use ComposerUnused\SymbolParser\Symbol\Provider\FileIterationInterface;
 use Generator;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
@@ -19,8 +20,8 @@ final class SymbolNameParser implements SymbolNameParserInterface
     private $traverser;
     /** @var SymbolCollectorInterface */
     private $visitor;
-    /** @var FileSymbolProvider */
-    private $fileProvider;
+    /** @var FileIterationInterface */
+    private $fileIterator;
     /** @var SplFileInfo */
     private $currentFile;
 
@@ -44,11 +45,9 @@ final class SymbolNameParser implements SymbolNameParserInterface
             return;
         }
 
-        $this->visitor->followIncludesCallback(function (string $includeFileName) {
-            $this->fileProvider->addFiles(new ArrayIterator([
-                new SplFileInfo($this->currentFile->getPath() . '/' . $includeFileName)
-            ]));
-        });
+        if ($this->fileIterator !== null) {
+            $this->visitor->setFileIncludeCallback(Closure::fromCallable([$this, 'handleFileInclude']));
+        }
 
         $this->traverser->traverse($nodes);
 
@@ -56,13 +55,19 @@ final class SymbolNameParser implements SymbolNameParserInterface
         $this->visitor->reset();
     }
 
-    public function setSymbolProvider(FileSymbolProvider $provider): void
+    public function setFileIterator(FileIterationInterface $fileIterator): void
     {
-        $this->fileProvider = $provider;
+        $this->fileIterator = $fileIterator;
     }
 
     public function setCurrentFile(SplFileInfo $file): void
     {
         $this->currentFile = $file;
+    }
+
+    public function handleFileInclude(FileInclude $fileInclude): void
+    {
+        $file = new SplFileInfo($this->currentFile->getPath() . '/' . ltrim($fileInclude->getPath(), '/'));
+        $this->fileIterator->appendFiles(new ArrayIterator([$file]));
     }
 }

@@ -52,8 +52,9 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
 
         $symbols = iterator_to_array($fileLoader->load($rootPackage));
 
-        self::assertCount(1, $symbols);
+        self::assertCount(2, $symbols);
         self::assertEquals('Ds\Vector', $symbols['Ds\Vector']->getIdentifier());
+        self::assertEquals('json_encode', $symbols['json_encode']->getIdentifier());
     }
 
     protected function createConsumedFileSymbolLoader(string $baseDir): FileSymbolLoader

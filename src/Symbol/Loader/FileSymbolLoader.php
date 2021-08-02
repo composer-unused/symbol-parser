@@ -10,7 +10,6 @@ use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use Generator;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 use function array_map;
 use function array_merge;
@@ -55,7 +54,6 @@ final class FileSymbolLoader implements SymbolLoaderInterface
 
         $finder = new Finder();
 
-        /** @var SplFileInfo[]|Finder $files */
         $files = $finder
             ->files()
             ->name('*.php')
@@ -66,7 +64,9 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             ->ignoreUnreadableDirs()
             ->exclude(['vendor']);
 
-        yield from $this->fileSymbolProvider->provide($files);
+        $this->fileSymbolProvider->appendFiles($files->getIterator());
+
+        yield from $this->fileSymbolProvider->provide();
     }
 
     /**

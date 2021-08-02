@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
-use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
+use ComposerUnused\SymbolParser\Symbol\Provider\FileIterationInterface;
 use Generator;
 use SplFileInfo;
 
@@ -18,7 +18,7 @@ interface SymbolNameParserInterface
     /**
      * Set the current handling symbol provider to the parser for file include following
      */
-    public function setSymbolProvider(FileSymbolProvider $provider): void;
+    public function setFileIterator(FileIterationInterface $fileIterator): void;
 
     /**
      * Set current handles file

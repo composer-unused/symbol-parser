@@ -13,7 +13,7 @@ abstract class AbstractCollector extends NodeVisitorAbstract implements SymbolCo
     /** @var null|Closure */
     private $includeCallback;
 
-    public function followIncludesCallback(Closure $includeCallback): void
+    public function setFileIncludeCallback(Closure $includeCallback): void
     {
         $this->includeCallback = $includeCallback;
     }
@@ -33,11 +33,15 @@ abstract class AbstractCollector extends NodeVisitorAbstract implements SymbolCo
             return;
         }
 
-        $scalar = $include->expr;
-        if (!$scalar instanceof Node\Scalar\String_) {
-            return;
-        }
+        $expr = $include->expr;
 
-        ($this->includeCallback)($scalar->value);
+        switch (get_class($expr)) {
+            case Node\Scalar\String_::class:
+                ($this->includeCallback)(FileInclude::fromScalar($expr));
+                break;
+            case Node\Expr\BinaryOp\Concat::class:
+                ($this->includeCallback)(FileInclude::fromConcatOperation($expr));
+                break;
+        }
     }
 }
