@@ -58,6 +58,18 @@ final class DefinedSymbolCollector extends AbstractCollector
             return NodeTraverser::DONT_TRAVERSE_CHILDREN;
         }
 
+        if ($node instanceof Node\Stmt\Expression && $node->expr instanceof Node\Expr\FuncCall) {
+            /** @var Node\Name $expressionName */
+            $expressionName = $node->expr->name;
+            $functionName = $expressionName->parts[0] ?? null;
+            $firstArgument = $node->expr->args[0]->value;
+            if ($functionName === 'define' && $firstArgument instanceof Node\Scalar\String_) {
+                $this->constants[] = $firstArgument->value;
+            }
+
+            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+        }
+
         return null;
     }
 

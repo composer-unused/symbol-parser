@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Integration\Parser\PHP;
 
+use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ConstStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
@@ -89,5 +91,53 @@ class SymbolNameParserTest extends TestCase
 
         self::assertCount(3, $symbolNames);
         self::assertContains('TESTCONST3', $symbolNames);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldParseDefinedConstants(): void
+    {
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new DefinedSymbolCollector()
+        );
+
+        $code = <<<CODE
+        <?php
+        declare(strict_types=1);
+
+        define('TESTDEFINED', 1);
+        CODE;
+
+        $symbolNames = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertCount(1, $symbolNames);
+        self::assertContains('TESTDEFINED', $symbolNames);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldFindConsumedConstants(): void
+    {
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new ConsumedSymbolCollector([new ConstStrategy()])
+        );
+
+        $code = <<<CODE
+        <?php
+        declare(strict_types=1);
+
+        function test() {
+            return TESTCONSTANT;
+        }
+        CODE;
+
+        $symbolNames = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertCount(1, $symbolNames);
+        self::assertContains('TESTCONSTANT', $symbolNames);
     }
 }

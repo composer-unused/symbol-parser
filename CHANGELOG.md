@@ -2,9 +2,9 @@
 
 ## [Unreleased] - TBA
 ### Added
-
+- Added possibilty to parse symbols from `define()`
+- Added `ConstStrategy` to parse consumed constants
 ### Changed
-
 ### Removed
 
 ## [0.1.3] - 2021-08-02
