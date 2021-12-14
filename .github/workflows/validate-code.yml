@@ -1,0 +1,85 @@
+name: CI Pipeline
+on:
+  push:
+    branches:
+      - "[0-9]+.[0-9]+.x"
+  pull_request:
+
+jobs:
+  coding-standard:
+    name: "Coding Standard"
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ "ubuntu-latest" ]
+        php: [ "8.0" ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.16.0
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, pecl
+          extensions: ds
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Check codestyle
+        run: vendor/bin/phpcs -s
+
+  static-analysis:
+    name: "Static Analysis"
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [ "7.4" ]
+        os: [ "ubuntu-latest" ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.16.0
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, pecl
+          extensions: ds
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Analyze code with static-analysis
+        run: vendor/bin/phpstan analyse --no-progress
+
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: "${{ matrix.os }}"
+    continue-on-error: "${{ matrix.experimental }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ "7.4", "8.0", "8.1" ]
+        os: [ "ubuntu-latest" ]
+        experimental: [ false ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.16.0
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, pecl
+          extensions: ds
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --colors=always --coverage-text

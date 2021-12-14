@@ -6,6 +6,7 @@ namespace ComposerUnused\SymbolParser\Test\Integration\Symbol\Loader;
 
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
+use Composer\Repository\RepositoryInterface;
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
@@ -47,7 +48,10 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
         $requiredSymbols = [];
 
         foreach ($rootPackage->getRequires() as $require) {
-            $composerPackage = $rootPackage->getRepository()->findPackage(
+            $repository = $rootPackage->getRepository();
+            assert($repository instanceof RepositoryInterface);
+
+            $composerPackage = $repository->findPackage(
                 $require->getTarget(),
                 $require->getConstraint()
             );

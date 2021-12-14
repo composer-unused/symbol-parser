@@ -62,9 +62,12 @@ final class DefinedSymbolCollector extends AbstractCollector
             /** @var Node\Name $expressionName */
             $expressionName = $node->expr->name;
             $functionName = $expressionName->parts[0] ?? null;
-            $firstArgument = $node->expr->args[0]->value;
-            if ($functionName === 'define' && $firstArgument instanceof Node\Scalar\String_) {
-                $this->constants[] = $firstArgument->value;
+            $firstArgument = $node->expr->args[0];
+            assert($firstArgument instanceof Node\Arg);
+
+            $firstArgumentValue = $firstArgument->value;
+            if ($functionName === 'define' && $firstArgumentValue instanceof Node\Scalar\String_) {
+                $this->constants[] = $firstArgumentValue->value;
             }
 
             return NodeTraverser::DONT_TRAVERSE_CHILDREN;
