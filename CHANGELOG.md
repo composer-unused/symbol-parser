@@ -2,7 +2,8 @@
 
 ## [Unreleased] - TBA
 ### Added
-- Added possibilty to parse symbols from `define()`
+- Added `FunctionInvocationStrategy` to find consumed symbols by function invocation
+- Added possibility to parse symbols from `define()`
 - Added `ConstStrategy` to parse consumed constants
 ### Changed
 ### Removed

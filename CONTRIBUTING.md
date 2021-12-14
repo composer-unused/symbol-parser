@@ -14,9 +14,9 @@ Thank you for considering contributing to this package!
 
 1. Run `docker-compose up -d`
 2. Use the corresponding created containers
-    - composer-unused-7.3
     - composer-unused-7.4
     - composer-unused-8.0
+    - composer-unused-8.1
 
 ### Submitting Changes
 
