@@ -10,7 +10,7 @@ use SplFileInfo;
 interface FileIterationInterface
 {
     /**
-     * @param Iterator<int, SplFileInfo> $files
+     * @param Iterator<string|int, SplFileInfo> $files
      */
     public function appendFiles(Iterator $files): void;
 }

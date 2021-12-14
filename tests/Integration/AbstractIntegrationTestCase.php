@@ -8,7 +8,23 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Composer\Package\PackageInterface;
+use ComposerUnused\SymbolParser\File\FileContentProvider;
+use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
+use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ClassConstStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StaticStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
+use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
+use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class AbstractIntegrationTestCase extends TestCase
 {
@@ -17,7 +33,7 @@ class AbstractIntegrationTestCase extends TestCase
         return (new Factory())->createComposer(new NullIO(), $cwd . '/composer.json', true, $cwd, false);
     }
 
-    protected function loadPackage(string $cwd, string $packageName): PackageInterface
+    private function loadPackage(string $cwd, string $packageName): PackageInterface
     {
         $composer = $this->getComposer($cwd);
 
@@ -33,5 +49,71 @@ class AbstractIntegrationTestCase extends TestCase
         );
 
         return $package;
+    }
+
+    /**
+     * @param list<string> $autoloadTypes
+     * @return array<SymbolInterface>
+     */
+    protected function loadDefinedFileSymbols(string $baseDir, string $packageName, array $autoloadTypes = null): array
+    {
+        $package = $this->loadPackage($baseDir, $packageName);
+
+        if ($autoloadTypes === null) {
+            $autoloadTypes = AutoloadType::all();
+        }
+
+        $fileLoader = new FileSymbolLoader(
+            $baseDir . '/vendor/' . $package->getName(),
+            new FileSymbolProvider(
+                new SymbolNameParser(
+                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    new DefinedSymbolCollector()
+                ),
+                new FileContentProvider()
+            ),
+            $autoloadTypes
+        );
+
+        return iterator_to_array($fileLoader->load($package));
+    }
+
+    /**
+     * @param list<string> $autoloadTypes
+     * @return array<SymbolInterface>
+     */
+    protected function loadConsumedFileSymbols(string $baseDir, array $autoloadTypes = null): array
+    {
+        $rootPackage = $this->getComposer($baseDir)->getPackage();
+
+        if ($autoloadTypes === null) {
+            $autoloadTypes = AutoloadType::all();
+        }
+
+        $fileLoader = new FileSymbolLoader(
+            $baseDir,
+            new FileSymbolProvider(
+                new SymbolNameParser(
+                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    new ConsumedSymbolCollector(
+                        [
+                            new NewStrategy(),
+                            new StaticStrategy(),
+                            new UseStrategy(),
+                            new ClassConstStrategy(),
+                            new UsedExtensionSymbolStrategy(
+                                get_loaded_extensions(),
+                                new NullLogger()
+                            ),
+                            new FunctionInvocationStrategy()
+                        ]
+                    )
+                ),
+                new FileContentProvider()
+            ),
+            $autoloadTypes
+        );
+
+        return iterator_to_array($fileLoader->load($rootPackage));
     }
 }

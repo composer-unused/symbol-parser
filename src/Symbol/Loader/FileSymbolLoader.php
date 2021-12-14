@@ -22,17 +22,17 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     /** @var array<string> */
     private $autoloadTypes;
     /** @var string */
-    private $vendorDir;
+    private $packageDir;
 
     /**
      * @param array<string> $autoloadTypes
      */
     public function __construct(
-        string $vendorDir,
+        string $packageDir,
         FileSymbolProvider $fileSymbolProvider,
         array $autoloadTypes
     ) {
-        $this->vendorDir = $vendorDir;
+        $this->packageDir = $packageDir;
         $this->fileSymbolProvider = $fileSymbolProvider;
         $this->autoloadTypes = $autoloadTypes;
     }
@@ -70,7 +70,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     }
 
     /**
-     * @param array<string> $paths
+     * @param array<int|string, array<string>|string> $paths
      * @return array<string>
      */
     private function resolvePackageSourcePath(array $paths): array
@@ -78,7 +78,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $filesystem = new Filesystem();
 
         return array_map(function (string $path) use ($filesystem) {
-            return $filesystem->normalizePath($this->vendorDir . '/' . $path);
+            return $filesystem->normalizePath($this->packageDir . '/' . $path);
         }, $paths);
     }
 
@@ -104,6 +104,6 @@ final class FileSymbolLoader implements SymbolLoaderInterface
 
     private function isFilePath(string $path): bool
     {
-        return (bool)preg_match('/\..*$/', $path);
+        return (bool)preg_match('/\.[a-z0-9]+$/i', $path);
     }
 }

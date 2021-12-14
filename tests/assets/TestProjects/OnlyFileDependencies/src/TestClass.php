@@ -11,6 +11,6 @@ class TestClass
     public function testMethod(): void
     {
         $a = testfunction();
-        $b = testfunction();
+        $b = testfunction2();
     }
 }

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Integration\Symbol\Loader;
 
+use Composer\Package\PackageInterface;
 use ComposerUnused\SymbolParser\File\FileContentProvider;
+use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ClassConstStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StaticStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
@@ -30,16 +33,13 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
     /**
      * @test
      */
-    public function itFindsDefinedFileSymbols(): void
+    public function itFindsForeignDefinedFileSymbols(): void
     {
-        $package = $this->loadPackage(self::ONLY_FILE_DEPS, 'test/file-dependency');
-        $fileLoader = $this->createDefinedFileSymbolLoader(self::ONLY_FILE_DEPS);
+        $symbols = $this->loadDefinedFileSymbols(self::ONLY_FILE_DEPS, 'test/file-dependency', [AutoloadType::FILES]);
 
-        /** @var array<SymbolInterface> $symbols */
-        $symbols = iterator_to_array($fileLoader->load($package));
-
-        self::assertCount(1, $symbols);
-        self::assertEquals('testfunction', $symbols['testfunction']->getIdentifier());
+        self::assertCount(2, $symbols);
+        self::assertArrayHasKey('testfunction', $symbols);
+        self::assertArrayHasKey('testfunction2', $symbols);
     }
 
     /**
@@ -47,54 +47,22 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
      */
     public function itFindsConsumedFileSymbols(): void
     {
-        $rootPackage = $this->getComposer(self::AUTOLOAD_FILES_REQUIRE)->getPackage();
-        $fileLoader = $this->createConsumedFileSymbolLoader(self::AUTOLOAD_FILES_REQUIRE);
-
-        $symbols = iterator_to_array($fileLoader->load($rootPackage));
+        $symbols = $this->loadConsumedFileSymbols(self::ONLY_FILE_DEPS);
 
         self::assertCount(2, $symbols);
-        self::assertEquals('Ds\Vector', $symbols['Ds\Vector']->getIdentifier());
-        self::assertEquals('json_encode', $symbols['json_encode']->getIdentifier());
+        self::assertArrayHasKey('testfunction', $symbols);
+        self::assertArrayHasKey('testfunction2', $symbols);
     }
 
-    protected function createConsumedFileSymbolLoader(string $baseDir): FileSymbolLoader
+    /**
+     * @test
+     */
+    public function itFindsConsumedAutoloadFileRequireSymbols(): void
     {
-        return new FileSymbolLoader(
-            $baseDir,
-            new FileSymbolProvider(
-                new SymbolNameParser(
-                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                    new ConsumedSymbolCollector(
-                        [
-                            new NewStrategy(),
-                            new StaticStrategy(),
-                            new UseStrategy(),
-                            new ClassConstStrategy(),
-                            new UsedExtensionSymbolStrategy(
-                                get_loaded_extensions(),
-                                new NullLogger()
-                            )
-                        ]
-                    )
-                ),
-                new FileContentProvider()
-            ),
-            ['files']
-        );
-    }
+        $symbols = $this->loadConsumedFileSymbols(self::AUTOLOAD_FILES_REQUIRE, [AutoloadType::FILES]);
 
-    protected function createDefinedFileSymbolLoader(string $baseDir): FileSymbolLoader
-    {
-        return new FileSymbolLoader(
-            $baseDir,
-            new FileSymbolProvider(
-                new SymbolNameParser(
-                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                    new DefinedSymbolCollector()
-                ),
-                new FileContentProvider()
-            ),
-            ['files']
-        );
+        self::assertCount(2, $symbols);
+        self::assertArrayHasKey('Ds\Vector', $symbols);
+        self::assertArrayHasKey('json_encode', $symbols);
     }
 }
