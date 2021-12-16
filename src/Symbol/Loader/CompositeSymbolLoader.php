@@ -12,6 +12,9 @@ final class CompositeSymbolLoader implements SymbolLoaderInterface
     /** @var array<SymbolLoaderInterface> */
     private $symbolLoader;
 
+    /** @var string|null */
+    private $baseDir;
+
     /**
      * @param array<SymbolLoaderInterface> $symbolLoader
      */
@@ -23,7 +26,15 @@ final class CompositeSymbolLoader implements SymbolLoaderInterface
     public function load(PackageInterface $package): Generator
     {
         foreach ($this->symbolLoader as $loader) {
-            yield from $loader->load($package);
+            yield from $loader->withBaseDir($this->baseDir)->load($package);
         }
+    }
+
+    public function withBaseDir(?string $baseDir): SymbolLoaderInterface
+    {
+        $clone = clone $this;
+        $clone->baseDir = $baseDir;
+
+        return $clone;
     }
 }

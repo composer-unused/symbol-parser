@@ -14,4 +14,6 @@ interface SymbolLoaderInterface
      * @return Generator<SymbolInterface>
      */
     public function load(PackageInterface $package): Generator;
+
+    public function withBaseDir(?string $baseDir): self;
 }

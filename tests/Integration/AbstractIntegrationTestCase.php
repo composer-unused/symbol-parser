@@ -64,7 +64,6 @@ class AbstractIntegrationTestCase extends TestCase
         }
 
         $fileLoader = new FileSymbolLoader(
-            $baseDir . '/vendor/' . $package->getName(),
             new FileSymbolProvider(
                 new SymbolNameParser(
                     (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
@@ -75,7 +74,9 @@ class AbstractIntegrationTestCase extends TestCase
             $autoloadTypes
         );
 
-        return iterator_to_array($fileLoader->load($package));
+        return iterator_to_array(
+            $fileLoader->withBaseDir($baseDir . '/vendor/' . $package->getName())->load($package)
+        );
     }
 
     /**
@@ -91,7 +92,6 @@ class AbstractIntegrationTestCase extends TestCase
         }
 
         $fileLoader = new FileSymbolLoader(
-            $baseDir,
             new FileSymbolProvider(
                 new SymbolNameParser(
                     (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
@@ -114,6 +114,8 @@ class AbstractIntegrationTestCase extends TestCase
             $autoloadTypes
         );
 
-        return iterator_to_array($fileLoader->load($rootPackage));
+        return iterator_to_array(
+            $fileLoader->withBaseDir($baseDir)->load($rootPackage)
+        );
     }
 }

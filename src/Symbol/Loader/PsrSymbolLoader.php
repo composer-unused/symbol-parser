@@ -23,4 +23,9 @@ final class PsrSymbolLoader implements SymbolLoaderInterface
             yield new NamespaceSymbol($namespace);
         }
     }
+
+    public function withBaseDir(?string $baseDir): SymbolLoaderInterface
+    {
+        return $this;
+    }
 }
