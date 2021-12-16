@@ -10,6 +10,7 @@ use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use Generator;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
+
 use function array_map;
 use function array_merge;
 use function preg_match;

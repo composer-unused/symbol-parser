@@ -8,6 +8,7 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
@@ -55,9 +56,14 @@ class AbstractIntegrationTestCase extends TestCase
      * @param list<string> $autoloadTypes
      * @return array<SymbolInterface>
      */
-    protected function loadDefinedFileSymbols(string $baseDir, string $packageName, array $autoloadTypes = null): array
+    protected function loadDefinedFileSymbols(string $baseDir, array $autoloadTypes = null, string $packageName = null): array
     {
-        $package = $this->loadPackage($baseDir, $packageName);
+        if ($packageName === null) {
+            $package = $this->loadRootPackage($baseDir);
+        } else {
+            $package = $this->loadPackage($baseDir, $packageName);
+            $baseDir .= '/vendor/' . $package->getName();
+        }
 
         if ($autoloadTypes === null) {
             $autoloadTypes = AutoloadType::all();
@@ -75,7 +81,7 @@ class AbstractIntegrationTestCase extends TestCase
         );
 
         return iterator_to_array(
-            $fileLoader->withBaseDir($baseDir . '/vendor/' . $package->getName())->load($package)
+            $fileLoader->withBaseDir($baseDir)->load($package)
         );
     }
 
@@ -117,5 +123,17 @@ class AbstractIntegrationTestCase extends TestCase
         return iterator_to_array(
             $fileLoader->withBaseDir($baseDir)->load($rootPackage)
         );
+    }
+
+    protected function loadRootPackage(string $baseDir): RootPackageInterface
+    {
+        $composer = $this->getComposer($baseDir);
+        $rootPackage = $composer->getPackage();
+
+        $rootPackage->setRepository(
+            $composer->getRepositoryManager()->getLocalRepository()
+        );
+
+        return $rootPackage;
     }
 }
