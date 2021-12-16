@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
+namespace ComposerUnused\SymbolParser\Test\Unit\Symbol;
 
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use PHPUnit\Framework\TestCase;

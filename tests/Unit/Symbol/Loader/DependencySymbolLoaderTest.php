@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol\Loader;
+namespace ComposerUnused\SymbolParser\Test\Unit\Symbol\Loader;
 
 use Composer\Package\Package;
-use Generator;
 use ComposerUnused\SymbolParser\Symbol\Loader\CompositeSymbolLoader;
-use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 class DependencySymbolLoaderTest extends TestCase
@@ -74,8 +73,10 @@ class DependencySymbolLoaderTest extends TestCase
 
         $firstSymbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
         $firstSymbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));
+        $firstSymbolLoader->method('withBaseDir')->willReturnSelf();
 
         $secondSymbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
+        $secondSymbolLoader->method('withBaseDir')->willReturnSelf();
         $secondSymbolLoader
             ->expects(self::once())
             ->method('load')
@@ -83,8 +84,8 @@ class DependencySymbolLoaderTest extends TestCase
                 new Symbol('testfunction')
             ]));
 
-        $firstSymbolLoader = new CompositeSymbolLoader([$secondSymbolLoader, $firstSymbolLoader]);
-        $symbols = $firstSymbolLoader->load($package);
+        $compositeSymbolLoader = new CompositeSymbolLoader([$secondSymbolLoader, $firstSymbolLoader]);
+        $symbols = $compositeSymbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);
         self::assertCount(1, $symbolsArray);

@@ -18,7 +18,7 @@ require:
 remove:
 	docker exec -it $(CONTAINER) composer remove $(filter-out $@, $(MAKECMDGOALS))
 
-check: csfix cs phpunit analyse
+check: cs analyse phpunit
 
 phpunit:
 	docker exec -it $(CONTAINER) vendor/bin/phpunit

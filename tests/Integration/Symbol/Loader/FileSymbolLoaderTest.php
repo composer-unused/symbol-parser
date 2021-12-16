@@ -17,7 +17,7 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
      */
     public function itFindsForeignDefinedFileSymbols(): void
     {
-        $symbols = $this->loadDefinedFileSymbols(self::ONLY_FILE_DEPS, 'test/file-dependency', [AutoloadType::FILES]);
+        $symbols = $this->loadDefinedFileSymbols(self::ONLY_FILE_DEPS, [AutoloadType::FILES], 'test/file-dependency');
 
         self::assertCount(2, $symbols);
         self::assertArrayHasKey('testfunction', $symbols);

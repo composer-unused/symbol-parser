@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Parser\PHP;
+namespace ComposerUnused\SymbolParser\Test\Unit\PHP;
 
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use PhpParser\Node\Const_;
