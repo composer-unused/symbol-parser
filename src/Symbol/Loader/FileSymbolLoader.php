@@ -41,7 +41,9 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $paths = [];
 
         foreach ($this->autoloadTypes as $autoloadType) {
-            $paths[] = $this->resolvePackageSourcePath($package->getAutoload()[$autoloadType] ?? []);
+            /** @var array<string, string> $autoloadPaths */
+            $autoloadPaths = $package->getAutoload()[$autoloadType] ?? [];
+            $paths[] = $this->resolvePackageSourcePath($autoloadPaths);
         }
 
         [$sourceFiles, $sourceFolders] = $this->partitionFilesAndFolders(
@@ -66,8 +68,8 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     }
 
     /**
-     * @param array<int|string, array<string>|string> $paths
-     * @return array<string>
+     * @param array<string, string> $paths
+     * @return array<string, string>
      */
     private function resolvePackageSourcePath(array $paths): array
     {
