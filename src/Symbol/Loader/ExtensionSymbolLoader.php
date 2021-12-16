@@ -46,4 +46,9 @@ final class ExtensionSymbolLoader implements SymbolLoaderInterface
                || $package->getName() === 'php'
                || $package->getName() === 'php-64bit';
     }
+
+    public function withBaseDir(?string $baseDir): SymbolLoaderInterface
+    {
+        return $this;
+    }
 }

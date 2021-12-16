@@ -10,7 +10,6 @@ use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use Generator;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
-
 use function array_map;
 use function array_merge;
 use function preg_match;
@@ -21,18 +20,14 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     private $fileSymbolProvider;
     /** @var array<string> */
     private $autoloadTypes;
-    /** @var string */
-    private $packageDir;
+    /** @var string|null */
+    private $baseDir;
 
     /**
      * @param array<string> $autoloadTypes
      */
-    public function __construct(
-        string $packageDir,
-        FileSymbolProvider $fileSymbolProvider,
-        array $autoloadTypes
-    ) {
-        $this->packageDir = $packageDir;
+    public function __construct(FileSymbolProvider $fileSymbolProvider, array $autoloadTypes)
+    {
         $this->fileSymbolProvider = $fileSymbolProvider;
         $this->autoloadTypes = $autoloadTypes;
     }
@@ -78,7 +73,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $filesystem = new Filesystem();
 
         return array_map(function (string $path) use ($filesystem) {
-            return $filesystem->normalizePath($this->packageDir . '/' . $path);
+            return $filesystem->normalizePath($this->baseDir . '/' . $path);
         }, $paths);
     }
 
@@ -105,5 +100,13 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     private function isFilePath(string $path): bool
     {
         return (bool)preg_match('/\.[a-z0-9]+$/i', $path);
+    }
+
+    public function withBaseDir(?string $baseDir): SymbolLoaderInterface
+    {
+        $clone = clone $this;
+        $clone->baseDir = $baseDir;
+
+        return $clone;
     }
 }
