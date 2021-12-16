@@ -17,12 +17,12 @@
     ],
     "require": {
         "php": ">=7.3 || ^8.0",
-        "composer/composer": "^2.0",
         "nikic/php-parser": "^4.13",
         "symfony/finder": "4.4 || ^5.3"
     },
     "require-dev": {
         "ext-ds": "*",
+        "composer/composer": "^2.1",
         "phpstan/phpstan": "^0.12.68",
         "phpunit/phpunit": "^9.5.10",
         "roave/security-advisories": "dev-master",
