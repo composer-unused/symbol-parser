@@ -15,6 +15,10 @@ final class FunctionInvocationStrategy implements StrategyInterface
             return false;
         }
 
+        if (!$node->name instanceof Node\Name) {
+            return false;
+        }
+
         return true;
     }
 
