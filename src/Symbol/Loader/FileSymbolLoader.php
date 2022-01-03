@@ -60,6 +60,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->ignoreUnreadableDirs()
+            ->followLinks()
             ->exclude(['vendor']);
 
         $this->fileSymbolProvider->appendFiles($files->getIterator());
