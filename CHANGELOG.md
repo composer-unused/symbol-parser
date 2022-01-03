@@ -5,6 +5,8 @@
 - Added `FunctionInvocationStrategy` to find consumed symbols by function invocation
 - Added possibility to parse symbols from `define()`
 - Added `ConstStrategy` to parse consumed constants
+- Added support for `symfony/finder` up until version `^6.0`
+- Added symlink support for `autoload.files`
 ### Changed
 ### Removed
 
