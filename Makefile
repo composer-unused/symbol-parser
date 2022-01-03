@@ -1,39 +1,48 @@
-CONTAINER=symbol-parser-8.0
+PHP_VERSION=8.0
 
-up:
-	docker-compose up -d
+up: ## Run all containers in all versions
+	docker compose up -d
 
-down:
-	docker-compose down
+down: ## Shut down all containers
+	docker compose down --remove-orphans
 
-install:
-	docker exec -it $(CONTAINER) composer install
+clean: ## Clean vendor/ and composer.lock
+	rm -rf vendor/ composer.lock
 
-update:
-	docker exec -it $(CONTAINER) composer update
+install: ## Run `composer install`
+	docker compose run php$(PHP_VERSION) composer install
 
-require:
-	docker exec -it $(CONTAINER) composer require $(filter-out $@, $(MAKECMDGOALS))
+update: ## Run `composer update`
+	docker compose run php$(PHP_VERSION) composer update $(filter-out $@, $(MAKECMDGOALS))
 
-remove:
-	docker exec -it $(CONTAINER) composer remove $(filter-out $@, $(MAKECMDGOALS))
+require: ## Run `composer require`
+	docker compose run php$(PHP_VERSION) composer require $(filter-out $@, $(MAKECMDGOALS))
 
-check: cs analyse phpunit
+remove: ## Run `composer remove`
+	docker compose run php$(PHP_VERSION) composer remove $(filter-out $@, $(MAKECMDGOALS))
 
-phpunit:
-	docker exec -it $(CONTAINER) vendor/bin/phpunit
+check: cs analyse phpunit ## Run all checks in succession (phpcs, phpunit, phpstan)
 
-analyse:
-	docker exec -it $(CONTAINER) vendor/bin/phpstan analyse
+phpunit: ## Run phpunit tests
+	docker compose run php$(PHP_VERSION) vendor/bin/phpunit
 
-cs:
-	docker exec -it $(CONTAINER) vendor/bin/phpcs
+analyse: ## Run phpstan analyse
+	docker compose run php$(PHP_VERSION) vendor/bin/phpstan analyse
 
-csfix:
-	docker exec -it $(CONTAINER) vendor/bin/phpcbf
+cs: ## Run php cs
+	docker compose run php$(PHP_VERSION) vendor/bin/phpcs
 
-ssh:
-	docker exec -it $(CONTAINER) /bin/sh
+csfix: ## Run phpcs fixer
+	docker compose run php$(PHP_VERSION) vendor/bin/phpcbf
+
+box: ## Compile /build/composer-unused.phar
+	docker compose run php$(PHP_VERSION) php box.phar compile
+
+ssh: ## SSH into container
+	docker compose run $(PHP_VERSION) /bin/sh
+
+help: ## Displays this list of targets with descriptions
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
 %:
-	@true
+	@:
