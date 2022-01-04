@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Symbol\Loader;
 
-use Composer\Package\PackageInterface;
-use Composer\Util\Filesystem;
+use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use Generator;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Finder\Finder;
 
 use function array_map;
@@ -33,9 +31,6 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $this->autoloadTypes = $autoloadTypes;
     }
 
-    /**
-     * @throws IOException
-     */
     public function load(PackageInterface $package): Generator
     {
         $paths = [];
@@ -74,10 +69,8 @@ final class FileSymbolLoader implements SymbolLoaderInterface
      */
     private function resolvePackageSourcePath(array $paths): array
     {
-        $filesystem = new Filesystem();
-
-        return array_map(function (string $path) use ($filesystem) {
-            return $filesystem->normalizePath($this->baseDir . '/' . $path);
+        return array_map(function (string $path) {
+            return $this->baseDir . DIRECTORY_SEPARATOR . $path;
         }, $paths);
     }
 

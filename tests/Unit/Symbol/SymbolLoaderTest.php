@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Unit\Symbol;
 
-use Composer\Package\Package;
-use ComposerUnused\SymbolParser\Symbol\Loader\CompositeSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\PsrSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\NamespaceSymbol;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Test\Stubs\TestPackage;
 use Generator;
 use PHPUnit\Framework\TestCase;
 
@@ -42,13 +41,13 @@ class SymbolLoaderTest extends TestCase
      */
     public function itShouldMatchPsr0(): void
     {
-        $package = new Package('test', '*', '*');
-        $package->setTargetDir('/');
-        $package->setAutoload([
+        $package = new TestPackage();
+        $package->name = 'test';
+        $package->autoload = [
             'psr-0' => [
                 'Test\\Namespace\\' => 'src'
             ]
-        ]);
+        ];
 
         $symbolLoader = new PsrSymbolLoader();
         $symbols = $symbolLoader->load($package);
@@ -63,13 +62,13 @@ class SymbolLoaderTest extends TestCase
      */
     public function itShouldMatchPsr4(): void
     {
-        $package = new Package('test', '*', '*');
-        $package->setTargetDir('/');
-        $package->setAutoload([
+        $package = new TestPackage();
+        $package->name = 'test';
+        $package->autoload = [
             'psr-4' => [
                 'Test\\Namespace\\' => 'src'
             ]
-        ]);
+        ];
 
         $symbolLoader = new PsrSymbolLoader();
         $symbols = $symbolLoader->load($package);

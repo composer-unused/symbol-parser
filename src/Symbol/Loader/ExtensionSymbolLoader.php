@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Symbol\Loader;
 
-use Composer\Package\PackageInterface;
+use ComposerUnused\Contracts\PackageInterface;
 use Generator;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use ReflectionExtension;

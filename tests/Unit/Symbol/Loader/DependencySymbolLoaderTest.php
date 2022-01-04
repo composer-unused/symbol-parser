@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Unit\Symbol\Loader;
 
-use Composer\Package\Package;
 use ComposerUnused\SymbolParser\Symbol\Loader\CompositeSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Test\Stubs\TestPackage;
 use Generator;
 use PHPUnit\Framework\TestCase;
 
@@ -42,9 +42,8 @@ class DependencySymbolLoaderTest extends TestCase
      */
     public function itShouldReturnEmptySymbolsOnEmptyPackage(): void
     {
-        $package = new Package('test', '*', '*');
-        $package->setTargetDir('/');
-        $package->setAutoload([]);
+        $package = new TestPackage();
+        $package->name = 'test';
 
         $firstSymbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
         $firstSymbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));
@@ -63,13 +62,13 @@ class DependencySymbolLoaderTest extends TestCase
      */
     public function itShouldMatchFiles(): void
     {
-        $package = new Package('test', '*', '*');
-        $package->setTargetDir('/foobar');
-        $package->setAutoload([
+        $package = new TestPackage();
+        $package->name = 'test';
+        $package->autoload = [
             'files' => [
                 'include/functions.php'
             ]
-        ]);
+        ];
 
         $firstSymbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
         $firstSymbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));

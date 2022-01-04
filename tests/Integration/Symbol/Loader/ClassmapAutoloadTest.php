@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Integration\Symbol\Loader;
 
-use Composer\Repository\RepositoryInterface;
 use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
 use ComposerUnused\SymbolParser\Test\Integration\AbstractIntegrationTestCase;
 
@@ -32,26 +31,14 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
      */
     public function itShouldLoadForeignSymbolsCorrectly(): void
     {
-        $rootPackage = $this->loadRootPackage(self::BASE_DIR);
+        $rootPackage = $this->loadPackage(self::BASE_DIR);
         $requiredSymbols = [];
 
         foreach ($rootPackage->getRequires() as $require) {
-            $repository = $rootPackage->getRepository();
-            assert($repository instanceof RepositoryInterface);
-
-            $composerPackage = $repository->findPackage(
-                $require->getTarget(),
-                $require->getConstraint()
-            );
-
-            if ($composerPackage === null) {
-                continue;
-            }
-
             $requiredSymbols[] = $this->loadDefinedFileSymbols(
                 self::BASE_DIR,
                 [AutoloadType::CLASSMAP],
-                $composerPackage->getName()
+                $require->getTarget()
             );
         }
 
