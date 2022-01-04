@@ -1,8 +1,5 @@
 {
     "name": "classmap/autoload",
-    "description": "foobar",
-    "type": "library",
-    "minimum-stability": "stable",
     "require": {
         "lulco/redis-proxy": "^0.4.2",
         "nette/database": "^3.0"

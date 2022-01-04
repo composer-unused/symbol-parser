@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Integration;
 
-use Composer\Composer;
-use Composer\Factory;
-use Composer\IO\NullIO;
-use Composer\Package\PackageInterface;
-use Composer\Package\RootPackageInterface;
+use ComposerUnused\Contracts\LinkInterface;
+use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
@@ -23,45 +20,42 @@ use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Test\Stubs\Config;
+use ComposerUnused\SymbolParser\Test\Stubs\TestLink;
+use ComposerUnused\SymbolParser\Test\Stubs\TestPackage;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class AbstractIntegrationTestCase extends TestCase
 {
-    protected function getComposer(string $cwd): Composer
+    private function getSerializer(): SerializerInterface
     {
-        return (new Factory())->createComposer(new NullIO(), $cwd . '/composer.json', true, $cwd, false);
+        return new Serializer([new PropertyNormalizer()], [new JsonEncoder()]);
     }
 
-    private function loadPackage(string $cwd, string $packageName): PackageInterface
+    private function loadVendorPackage(string $cwd, string $packageName): PackageInterface
     {
-        $composer = $this->getComposer($cwd);
-
-        $testDependency = $composer->getPackage()->getRequires()[$packageName];
-        $localRepo = $composer->getRepositoryManager()->getLocalRepository();
-        /** @var string $constraint */
-        $constraint = $testDependency->getConstraint();
-
-        /** @var PackageInterface $package */
-        $package = $localRepo->findPackage(
-            $testDependency->getTarget(),
-            $constraint
-        );
-
-        return $package;
+        return $this->loadPackage($cwd . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . $packageName);
     }
 
     /**
      * @param list<string> $autoloadTypes
      * @return array<SymbolInterface>
      */
-    protected function loadDefinedFileSymbols(string $baseDir, array $autoloadTypes = null, string $packageName = null): array
-    {
+    protected function loadDefinedFileSymbols(
+        string $baseDir,
+        array $autoloadTypes = null,
+        string $packageName = null
+    ): array {
         if ($packageName === null) {
-            $package = $this->loadRootPackage($baseDir);
+            $package = $this->loadPackage($baseDir);
         } else {
-            $package = $this->loadPackage($baseDir, $packageName);
+            $package = $this->loadVendorPackage($baseDir, $packageName);
             $baseDir .= '/vendor/' . $package->getName();
         }
 
@@ -91,7 +85,7 @@ class AbstractIntegrationTestCase extends TestCase
      */
     protected function loadConsumedFileSymbols(string $baseDir, array $autoloadTypes = null): array
     {
-        $rootPackage = $this->getComposer($baseDir)->getPackage();
+        $rootPackage = $this->loadPackage($baseDir);
 
         if ($autoloadTypes === null) {
             $autoloadTypes = AutoloadType::all();
@@ -125,15 +119,23 @@ class AbstractIntegrationTestCase extends TestCase
         );
     }
 
-    protected function loadRootPackage(string $baseDir): RootPackageInterface
+    protected function loadPackage(string $baseDir): PackageInterface
     {
-        $composer = $this->getComposer($baseDir);
-        $rootPackage = $composer->getPackage();
+        $composerJson = $baseDir . DIRECTORY_SEPARATOR . 'composer.json';
+        $jsonContent = file_get_contents($composerJson);
+        /** @var Config $config */
+        $config = $this->getSerializer()->deserialize($jsonContent, Config::class, 'json');
 
-        $rootPackage->setRepository(
-            $composer->getRepositoryManager()->getLocalRepository()
-        );
+        $package = new TestPackage();
+        $package->requires = array_map(static function (string $require): LinkInterface {
+            $link = new TestLink();
+            $link->target = $require;
 
-        return $rootPackage;
+            return $link;
+        }, array_keys($config->require));
+        $package->autoload = $config->autoload;
+        $package->name = $config->name;
+
+        return $package;
     }
 }

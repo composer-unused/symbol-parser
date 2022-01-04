@@ -7,8 +7,10 @@
 - Added `ConstStrategy` to parse consumed constants
 - Added support for `symfony/finder` up until version `^6.0`
 - Added symlink support for `autoload.files`
+- Added dependency to `composer-unused/contracts`
 ### Changed
 ### Removed
+- Dropped support for php `7.3`
 
 ## [0.1.3] - 2021-08-02
 ### Fixed

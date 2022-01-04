@@ -6,6 +6,7 @@ services:
     container_name: symbol-parser-7.4
     volumes:
       - .:/docker/symbol-parser:rw
+      - ../contracts:/docker/contracts:rw
     tty: true
 
   php8.0:
@@ -13,6 +14,7 @@ services:
     container_name: symbol-parser-8.0
     volumes:
       - .:/docker/symbol-parser:rw
+      - ../contracts:/docker/contracts:rw
     tty: true
 
   php8.1:
@@ -20,4 +22,5 @@ services:
     container_name: symbol-parser-8.1
     volumes:
       - .:/docker/symbol-parser:rw
+      - ../contracts:/docker/contracts:rw
     tty: true
