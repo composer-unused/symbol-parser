@@ -44,6 +44,8 @@ class FileSymbolProvider implements FileIterationInterface
                 yield $symbolName => new Symbol($symbolName);
             }
         }
+
+        $this->fileIterator = new AppendIterator();
     }
 
     public function appendFiles(Iterator $files): void
