@@ -1,6 +1,12 @@
 # Changelog
 
 ## [Unreleased] - TBA
+### Fixed
+### Added
+### Changed
+### Removed
+
+## [0.1.4] - 2022-01-05
 ### Added
 - Added `FunctionInvocationStrategy` to find consumed symbols by function invocation
 - Added possibility to parse symbols from `define()`
