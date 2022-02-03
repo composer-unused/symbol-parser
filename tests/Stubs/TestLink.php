@@ -14,4 +14,9 @@ final class TestLink implements LinkInterface
     {
         return $this->target;
     }
+
+    public function getLineNumber(): int
+    {
+        return 0;
+    }
 }

@@ -6,6 +6,13 @@
 ### Changed
 ### Removed
 
+## [0.1.5] - 2022-02-03
+### Fixed
+### Added
+### Changed
+- Allow `composer-unused/contracts` in version `0.2`
+### Removed
+
 ## [0.1.4] - 2022-01-05
 ### Added
 - Added `FunctionInvocationStrategy` to find consumed symbols by function invocation

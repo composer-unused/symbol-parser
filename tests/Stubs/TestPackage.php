@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Stubs;
 
+use ComposerUnused\Contracts\Exception\LinkNotFoundException;
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\PackageInterface;
 
@@ -35,5 +36,10 @@ final class TestPackage implements PackageInterface
     public function getSuggests(): array
     {
         return $this->suggests;
+    }
+
+    public function getRequire(string $name): LinkInterface
+    {
+        throw new LinkNotFoundException();
     }
 }
