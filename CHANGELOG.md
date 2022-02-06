@@ -2,6 +2,8 @@
 
 ## [Unreleased] - TBA
 ### Fixed
+- Fixed `FileContentProvider` to throw an exception when the file does not exist
+- Added `try/catch` to `FileSymbolProvider` to continue working instead of crashing if a file could not be parsed
 ### Added
 ### Changed
 ### Removed
