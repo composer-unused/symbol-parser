@@ -10,8 +10,7 @@ use PhpParser\NodeVisitorAbstract;
 
 abstract class AbstractCollector extends NodeVisitorAbstract implements SymbolCollectorInterface
 {
-    /** @var null|Closure */
-    private $includeCallback;
+    private ?Closure $includeCallback;
 
     public function setFileIncludeCallback(Closure $includeCallback): void
     {

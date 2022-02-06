@@ -7,7 +7,8 @@
     },
     "autoload": {
         "files": [
-            "src/functions_include.php"
+            "src/functions_include.php",
+            "src/non_existent_file.php"
         ]
     }
 }

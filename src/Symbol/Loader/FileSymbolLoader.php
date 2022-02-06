@@ -15,12 +15,10 @@ use function preg_match;
 
 final class FileSymbolLoader implements SymbolLoaderInterface
 {
-    /** @var FileSymbolProvider */
-    private $fileSymbolProvider;
+    private FileSymbolProvider $fileSymbolProvider;
     /** @var array<string> */
-    private $autoloadTypes;
-    /** @var string|null */
-    private $baseDir;
+    private array $autoloadTypes;
+    private ?string $baseDir;
 
     /**
      * @param array<string> $autoloadTypes

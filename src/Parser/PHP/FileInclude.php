@@ -10,8 +10,7 @@ use PhpParser\Node\Scalar\String_;
 
 final class FileInclude
 {
-    /** @var string */
-    private $filePath;
+    private string $filePath;
 
     private function __construct(string $filePath)
     {
