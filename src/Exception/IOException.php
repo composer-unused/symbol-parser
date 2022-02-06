@@ -12,4 +12,9 @@ class IOException extends RuntimeException
     {
         return new self('Unable to open resource ' . $path);
     }
+
+    public static function fileDoesNotExist(string $path): self
+    {
+        return new self('File does not exist: ' . $path);
+    }
 }

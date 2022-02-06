@@ -37,11 +37,16 @@ class FileSymbolProvider implements FileIterationInterface
     public function provide(): Generator
     {
         foreach ($this->fileIterator as $file) {
-            $content = $this->fileContentProvider->getContent($file);
-            $this->parser->setCurrentFile($file);
+            try {
+                $content = $this->fileContentProvider->getContent($file);
+                $this->parser->setCurrentFile($file);
 
-            foreach ($this->parser->parseSymbolNames($content) as $symbolName) {
-                yield $symbolName => new Symbol($symbolName);
+                foreach ($this->parser->parseSymbolNames($content) as $symbolName) {
+                    yield $symbolName => new Symbol($symbolName);
+                }
+            } catch (IOException $exception) {
+                // TODO add logging
+                continue;
             }
         }
 
