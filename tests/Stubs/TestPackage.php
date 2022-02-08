@@ -10,7 +10,7 @@ use ComposerUnused\Contracts\PackageInterface;
 
 final class TestPackage implements PackageInterface
 {
-    /** @phpstan-var array{psr-0?: array<string, string|string[]>, psr-4?: array<string, string|string[]>, classmap?: list<string>, files?: list<string>} */
+    /** @var array{psr-0?: array<string, string|string[]>, psr-4?: array<string, string|string[]>, classmap?: list<string>, files?: list<string>} */
     public array $autoload = [];
     public string $name = '';
     /** @var array<LinkInterface> */
