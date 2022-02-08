@@ -15,7 +15,7 @@ class FileContentProvider
     public function getContent(SplFileInfo $file): string
     {
         if (!file_exists($file->getPathname())) {
-            throw IOException::unableToOpenHandle($file->getPathname());
+            throw IOException::fileDoesNotExist($file->getPathname());
         }
 
         $contents = file_get_contents($file->getPathname());
