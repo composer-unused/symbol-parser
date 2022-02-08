@@ -11,6 +11,7 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
 {
     private const ONLY_FILE_DEPS = __DIR__ . '/../../../assets/TestProjects/OnlyFileDependencies';
     private const AUTOLOAD_FILES_REQUIRE = __DIR__ . '/../../../assets/TestProjects/AutoloadFilesWithRequire';
+    private const ARRAY_NAMESPACE = __DIR__ . '/../../../assets/TestProjects/ArrayNamespace';
 
     /**
      * @test
@@ -46,5 +47,17 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
         self::assertCount(2, $symbols);
         self::assertArrayHasKey('Ds\Vector', $symbols);
         self::assertArrayHasKey('json_encode', $symbols);
+    }
+
+    /**
+     * @test
+     */
+    public function itFindsArraySymbols(): void
+    {
+        /**
+         * TODO find a better strategy for testing this scenario
+         */
+        $this->expectNotToPerformAssertions();
+        $this->loadConsumedFileSymbols(self::ARRAY_NAMESPACE, [AutoloadType::PSR4]);
     }
 }
