@@ -8,22 +8,18 @@ use ArrayIterator;
 use Closure;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileIterationInterface;
 use Generator;
+use PhpParser\Error;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use SplFileInfo;
 
 final class SymbolNameParser implements SymbolNameParserInterface
 {
-    /** @var Parser */
-    private $parser;
-    /** @var NodeTraverser */
-    private $traverser;
-    /** @var SymbolCollectorInterface */
-    private $visitor;
-    /** @var FileIterationInterface */
-    private $fileIterator;
-    /** @var SplFileInfo */
-    private $currentFile;
+    private Parser $parser;
+    private NodeTraverser $traverser;
+    private SymbolCollectorInterface $visitor;
+    private ?FileIterationInterface $fileIterator = null;
+    private ?SplFileInfo $currentFile = null;
 
     public function __construct(Parser $parser, SymbolCollectorInterface $visitor)
     {
@@ -39,7 +35,12 @@ final class SymbolNameParser implements SymbolNameParserInterface
      */
     public function parseSymbolNames(string $code): Generator
     {
-        $nodes = $this->parser->parse($code);
+        try {
+            $nodes = $this->parser->parse($code);
+        } catch (Error $parseError) {
+            // TODO catch exception
+            return null;
+        }
 
         if ($nodes === null) {
             return;
@@ -67,6 +68,10 @@ final class SymbolNameParser implements SymbolNameParserInterface
 
     public function handleFileInclude(FileInclude $fileInclude): void
     {
+        if ($this->fileIterator === null || $this->currentFile === null) {
+            return;
+        }
+
         $file = new SplFileInfo($this->currentFile->getPath() . '/' . ltrim($fileInclude->getPath(), '/'));
         $this->fileIterator->appendFiles(new ArrayIterator([$file]));
     }

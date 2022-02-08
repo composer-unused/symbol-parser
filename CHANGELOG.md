@@ -2,8 +2,9 @@
 
 ## [Unreleased] - TBA
 ### Fixed
-- Fixed `FileContentProvider` to throw an exception when the file does not exist
-- Added `try/catch` to `FileSymbolProvider` to continue working instead of crashing if a file could not be parsed
+- Fix `FileContentProvider` to throw an exception when the file does not exist
+- Add `try/catch` to `FileSymbolProvider` to continue working instead of crashing if a file could not be parsed
+- Hotfix issue when attempting to parse an invalid php file, this will be caught silently and the file will not be parsed (will get reported in the future)
 ### Added
 ### Changed
 ### Removed
