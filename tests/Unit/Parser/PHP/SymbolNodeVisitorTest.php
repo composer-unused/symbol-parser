@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ComposerUnused\SymbolParser\Test\Unit\PHP;
+namespace ComposerUnused\SymbolParser\Test\Unit\Parser\PHP;
 
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use PhpParser\Node\Const_;
