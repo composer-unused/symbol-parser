@@ -34,8 +34,8 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $paths = [];
 
         foreach ($this->autoloadTypes as $autoloadType) {
-            /** @var array<string, string> $autoloadPaths */
-            $autoloadPaths = $package->getAutoload()[$autoloadType] ?? [];
+            $autoloadDefinition = $package->getAutoload()[$autoloadType] ?? [];
+            $autoloadPaths = $this->normalizePsrStructure($autoloadDefinition);
             $paths[] = $this->resolvePackageSourcePath($autoloadPaths);
         }
 
@@ -62,18 +62,25 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     }
 
     /**
-     * @param array<string, string> $paths
-     * @return array<string, string>
+     * @param array<string, list<string>> $paths
+     * @return array<string, list<string>>
      */
     private function resolvePackageSourcePath(array $paths): array
     {
-        return array_map(function (string $path) {
-            return $this->baseDir . DIRECTORY_SEPARATOR . $path;
-        }, $paths);
+        $fullPaths = [];
+
+        foreach ($paths as $namespace => $namespacePaths) {
+            $fullPaths[$namespace] = array_map(
+                fn (string $path): string => $this->baseDir . DIRECTORY_SEPARATOR . $path,
+                $namespacePaths
+            );
+        }
+
+        return $fullPaths;
     }
 
     /**
-     * @param array<string> $classmapPaths
+     * @param array<string, list<string>> $classmapPaths
      * @return array<array<string>>
      */
     private function partitionFilesAndFolders(array $classmapPaths): array
@@ -81,11 +88,13 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $files = [];
         $folders = [];
 
-        foreach ($classmapPaths as $path) {
-            if ($this->isFilePath($path)) {
-                $files[] = $path;
-            } else {
-                $folders[] = $path;
+        foreach ($classmapPaths as $namespacePaths) {
+            foreach ($namespacePaths as $path) {
+                if ($this->isFilePath($path)) {
+                    $files[] = $path;
+                } else {
+                    $folders[] = $path;
+                }
             }
         }
 
@@ -103,5 +112,18 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $clone->baseDir = $baseDir;
 
         return $clone;
+    }
+
+    /**
+     * @param array<array-key, string|list<string>> $autoloadDefinition
+     *
+     * @return array<array-key, list<string>>
+     */
+    private function normalizePsrStructure(array $autoloadDefinition): array
+    {
+        return array_map(
+            static fn ($value): array => is_array($value) ? $value : [$value],
+            $autoloadDefinition
+        );
     }
 }
