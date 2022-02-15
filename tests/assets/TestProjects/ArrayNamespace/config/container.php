@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace Configuration;
 
-echo "Hello";
+use Ds\Vector;
+
+$vector = new Vector();

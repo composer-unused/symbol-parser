@@ -4,4 +4,4 @@ declare(strict_types=1);
 
 namespace EmptyRequire;
 
-echo "Hello";
+$keys = array_keys([]);

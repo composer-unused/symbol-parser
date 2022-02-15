@@ -54,10 +54,11 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
      */
     public function itFindsArraySymbols(): void
     {
-        /**
-         * TODO find a better strategy for testing this scenario
-         */
-        $this->expectNotToPerformAssertions();
-        $this->loadConsumedFileSymbols(self::ARRAY_NAMESPACE, [AutoloadType::FILES]);
+        $symbols = $this->loadConsumedFileSymbols(self::ARRAY_NAMESPACE, [AutoloadType::PSR4]);
+
+        self::assertCount(3, $symbols);
+        self::assertArrayHasKey('Ds\Vector', $symbols);
+        self::assertArrayHasKey('json_encode', $symbols);
+        self::assertArrayHasKey('array_keys', $symbols);
     }
 }
