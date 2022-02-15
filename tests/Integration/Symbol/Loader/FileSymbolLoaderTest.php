@@ -58,6 +58,6 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
          * TODO find a better strategy for testing this scenario
          */
         $this->expectNotToPerformAssertions();
-        $this->loadConsumedFileSymbols(self::ARRAY_NAMESPACE, [AutoloadType::PSR4]);
+        $this->loadConsumedFileSymbols(self::ARRAY_NAMESPACE, [AutoloadType::FILES]);
     }
 }
