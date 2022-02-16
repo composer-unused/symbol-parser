@@ -6,7 +6,10 @@ namespace ComposerUnused\SymbolParser\Test\Unit\Parser\PHP;
 
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ExtendsParseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ImplementsParseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
@@ -83,5 +86,41 @@ final class SymbolNameParserTest extends TestCase
 
         self::assertCount(1, $symbols);
         self::assertSame('testfunction', $symbols[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldParseCode(): void
+    {
+        $code = <<<CODE
+        <?php
+
+        namespace Testing;
+
+        use My\NameSpace1; // partial foreign namespace use
+        use B\NS\MyClass; // foreign FQN
+
+        class Foo extends MyClass implements NameSpace1\Bar, \Other\Namespace2\Baz {
+        }
+        CODE;
+
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new ConsumedSymbolCollector(
+                [
+                    new UseStrategy(),
+                    new ExtendsParseStrategy(),
+                    new ImplementsParseStrategy(),
+                ]
+            )
+        );
+
+        $symbols = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertCount(3, $symbols);
+        self::assertSame('My\NameSpace1\Bar', $symbols[0]);
+        self::assertSame('B\NS\MyClass', $symbols[1]);
+        self::assertSame('Other\Namespace2\Baz', $symbols[2]);
     }
 }
