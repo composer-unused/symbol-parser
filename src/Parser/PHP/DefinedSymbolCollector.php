@@ -20,15 +20,14 @@ use function array_merge;
  */
 final class DefinedSymbolCollector extends AbstractCollector
 {
-    /** @var string */
-    private $namespace = '';
+    private string $namespace = '';
 
     /** @var array<string> */
-    private $functions = [];
+    private array $functions = [];
     /** @var array<string> */
-    private $constants = [];
+    private array $constants = [];
     /** @var array<string> */
-    private $classes = [];
+    private array $classes = [];
 
     public function enterNode(Node $node)
     {

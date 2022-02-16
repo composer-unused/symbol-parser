@@ -6,7 +6,7 @@ namespace ComposerUnused\SymbolParser\Symbol;
 
 final class Symbol implements SymbolInterface
 {
-    private $identifier;
+    private string $identifier;
 
     public function __construct(string $identifier)
     {
