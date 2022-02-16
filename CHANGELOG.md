@@ -2,6 +2,7 @@
 
 ## [Unreleased] - TBA
 ### Fixed
+- Fixed issue where `UseStrategy`, `ExtendsParseStrategy` and `ImplementsParseStrategy` resulted in partial symbol names
 ### Added
 ### Changed
 ### Removed
