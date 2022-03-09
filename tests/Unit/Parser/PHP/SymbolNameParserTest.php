@@ -9,6 +9,7 @@ use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ExtendsParseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ImplementsParseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\TypedAttributeStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use PhpParser\ParserFactory;
@@ -122,5 +123,39 @@ final class SymbolNameParserTest extends TestCase
         self::assertSame('My\NameSpace1\Bar', $symbols[0]);
         self::assertSame('B\NS\MyClass', $symbols[1]);
         self::assertSame('Other\Namespace2\Baz', $symbols[2]);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldParseSymbolFromTypedAttribute(): void
+    {
+        $code = <<<CODE
+        <?php
+
+        namespace Testing;
+
+        use Other\Fubar;
+
+        class Foo {
+            private \$foo;
+            private Fubar \$baz;
+            private \My\Namespace\Bar \$bar;
+        }
+        CODE;
+
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new ConsumedSymbolCollector(
+                [
+                    new TypedAttributeStrategy(),
+                ]
+            )
+        );
+
+        $symbols = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertCount(1, $symbols);
+        self::assertSame('My\Namespace\Bar', $symbols[0]);
     }
 }
