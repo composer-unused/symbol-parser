@@ -5,6 +5,7 @@
 - Fixed issue where `UseStrategy`, `ExtendsParseStrategy` and `ImplementsParseStrategy` resulted in partial symbol names
 ### Added
 - Added `TypedAttributeStrategy` to recognize usage for consumed full qualified property types
+- Added `FullQualifiedParameterStrategy` to recognize usage for consumed full qualified parameter types
 ### Changed
 ### Removed
 
