@@ -91,7 +91,7 @@ final class SymbolNameParserTest extends TestCase
     /**
      * @test
      */
-    public function itShouldParseCode(): void
+    public function itShouldConsolidatedSymbols(): void
     {
         $code = <<<CODE
         <?php
