@@ -7,6 +7,7 @@ namespace ComposerUnused\SymbolParser\Test\Unit\Parser\PHP;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ExtendsParseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FullQualifiedParameterStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ImplementsParseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\TypedAttributeStrategy;
@@ -157,5 +158,37 @@ final class SymbolNameParserTest extends TestCase
 
         self::assertCount(1, $symbols);
         self::assertSame('My\Namespace\Bar', $symbols[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldParseFQNFunctionParameter(): void
+    {
+        $code = <<<CODE
+        <?php
+
+        namespace Testing;
+
+        class Foo {
+            public function __construct(private readonly \My\Namespace\Bar1 \$parameter) {}
+            public function test(\My\Namespace\Bar2 \$parameter) {}
+        }
+        CODE;
+
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new ConsumedSymbolCollector(
+                [
+                    new FullQualifiedParameterStrategy()
+                ]
+            )
+        );
+
+        $symbols = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertCount(2, $symbols);
+        self::assertSame('My\Namespace\Bar1', $symbols[0]);
+        self::assertSame('My\Namespace\Bar2', $symbols[1]);
     }
 }
