@@ -45,6 +45,33 @@ class SymbolNameParserTest extends TestCase
     /**
      * @test
      */
+    public function itShouldParseInterfaces(): void
+    {
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new DefinedSymbolCollector()
+        );
+
+        $code = <<<CODE
+        <?php
+        declare(strict_types=1);
+
+        namespace Test\Sub;
+
+        interface TestInterface {
+            public function test();
+        }
+        CODE;
+
+
+        $symbolNames = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+        self::assertCount(1, $symbolNames);
+        self::assertContains('Test\\Sub\\TestInterface', $symbolNames);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldParseFunctions(): void
     {
         $symbolNameParser = new SymbolNameParser(

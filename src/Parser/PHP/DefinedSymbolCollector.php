@@ -6,7 +6,6 @@ namespace ComposerUnused\SymbolParser\Parser\PHP;
 
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
 
 use function array_merge;
 
@@ -38,7 +37,10 @@ final class DefinedSymbolCollector extends AbstractCollector
             return null;
         }
 
-        if ($node instanceof Node\Stmt\Class_) {
+        if (
+            $node instanceof Node\Stmt\Class_ ||
+            $node instanceof Node\Stmt\Interface_
+        ) {
             $this->classes[] = $this->namespace . $node->name;
 
             // We only need the class name, no need to dig further into the class
