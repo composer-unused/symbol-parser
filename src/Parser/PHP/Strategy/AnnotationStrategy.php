@@ -43,8 +43,13 @@ final class AnnotationStrategy implements StrategyInterface
      */
     public function extractSymbolNames(Node $node): array
     {
+        $docComment = $node->getDocComment();
+        if ($docComment === null) {
+            return [];
+        }
+
         $phpDoc = $this->phpDocParser->parse(
-            new TokenIterator($this->lexer->tokenize($node->getDocComment()->getText()))
+            new TokenIterator($this->lexer->tokenize($docComment->getText()))
         );
 
         $phpDocTagNodes = array_filter(
