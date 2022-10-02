@@ -6,6 +6,7 @@ namespace ComposerUnused\SymbolParser\Test\Unit\Parser\PHP;
 
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\AnnotationStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ExtendsParseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FullQualifiedParameterStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
@@ -14,6 +15,8 @@ use ComposerUnused\SymbolParser\Parser\PHP\Strategy\TypedAttributeStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use PhpParser\ParserFactory;
+use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
@@ -190,5 +193,50 @@ final class SymbolNameParserTest extends TestCase
         self::assertCount(2, $symbols);
         self::assertSame('My\Namespace\Bar1', $symbols[0]);
         self::assertSame('My\Namespace\Bar2', $symbols[1]);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldParseAnnotations(): void
+    {
+        $code = <<<CODE
+        <?php
+
+        namespace Test;
+
+        /** @My\Namespace\Foo */
+        final class MyClass
+        {
+            /** @My\Namespace\Bar */
+            private int \$x;
+
+            /** @My\Namespace\Bat */
+            public function bar(): void {}
+        }
+        CODE;
+
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new ConsumedSymbolCollector(
+                [
+                    new AnnotationStrategy(
+                        new ConstExprParser(),
+                        new Lexer()
+                    ),
+                ]
+            )
+        );
+
+        $symbols = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertSame(
+            [
+                'My\Namespace\Foo',
+                'My\Namespace\Bar',
+                'My\Namespace\Bat',
+            ],
+            $symbols
+        );
     }
 }
