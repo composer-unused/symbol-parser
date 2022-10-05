@@ -7,6 +7,7 @@ namespace ComposerUnused\SymbolParser\Symbol\Loader;
 use ComposerUnused\Contracts\PackageInterface;
 use Generator;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
+use ReflectionException;
 use ReflectionExtension;
 
 final class ExtensionSymbolLoader implements SymbolLoaderInterface
@@ -25,9 +26,13 @@ final class ExtensionSymbolLoader implements SymbolLoaderInterface
 
         $packageName = str_replace('ext-', '', $package->getName());
 
-        $reflection = new ReflectionExtension(
-            self::EXTENSION_ALIAS[$packageName] ?? $packageName
-        );
+        try {
+            $reflection = new ReflectionExtension(
+                self::EXTENSION_ALIAS[$packageName] ?? $packageName
+            );
+        } catch (ReflectionException $e) {
+            return [];
+        }
 
         $symbolNames = array_merge(
             array_flip($reflection->getClassNames()),
