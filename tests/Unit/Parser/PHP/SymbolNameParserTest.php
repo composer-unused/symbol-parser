@@ -211,8 +211,14 @@ final class SymbolNameParserTest extends TestCase
             /** @My\Namespace\Bar */
             private int \$x;
 
+            /** @var My\Namespace\FooBar */
+            private \$y;
+
             /** @My\Namespace\Bat */
             public function bar(): void {}
+
+            /** @param My\Namespace\BarFoo \$z */
+            public function bat(\$z): void {}
         }
         CODE;
 
@@ -234,7 +240,9 @@ final class SymbolNameParserTest extends TestCase
             [
                 'My\Namespace\Foo',
                 'My\Namespace\Bar',
+                'var',
                 'My\Namespace\Bat',
+                'param',
             ],
             $symbols
         );
