@@ -205,20 +205,54 @@ final class SymbolNameParserTest extends TestCase
 
         namespace Test;
 
-        /** @My\Namespace\Foo */
+        /**
+         * @My\Namespace\Lorem(x=100, y="foo")
+         * @mixin My\Namespace\Ipsum
+         * @property My\Namespace\Dolor \$foo
+         * @property-read My\Namespace\Sit \$foo
+         * @property-write My\Namespace\Amet \$foo
+         * @method My\Namespace\Consetetur lorem(My\Namespace\Sadipscing \$a, My\Namespace\Elitr \$b)
+         */
         final class MyClass
         {
-            /** @My\Namespace\Bar */
-            private int \$x;
+            /** @My\Namespace\Sed */
+            private int \$a;
 
-            /** @var My\Namespace\FooBar */
-            private \$y;
+            /** @var My\Namespace\Diam */
+            private \$b;
 
-            /** @My\Namespace\Bat */
-            public function bar(): void {}
+            /** @My\Namespace\Nonumy */
+            public function ipsum(): void {}
 
-            /** @param My\Namespace\BarFoo \$z */
-            public function bat(\$z): void {}
+            /** @param My\Namespace\Eirmod \$z */
+            public function dolor(\$c): void {}
+
+            /** @return My\Namespace\Tempor|My\Namespace\Invidunt */
+            public function sit() {}
+
+            /** @return My\Namespace\Ut&My\Namespace\Labore */
+            public function amet() {}
+
+            /** @return My\Namespace\Et<My\Namespace\Dolore > */
+            public function consetetur() {}
+
+            /** @return My\Namespace\Magna[] */
+            public function sadipscing() {}
+
+            /** @return array{'foo': My\Namespace\Aliquyam} */
+            public function elitr() {}
+
+            /** @return callable(My\Namespace\Erat): My\Namespace\Voluptua */
+            public function sed() {}
+
+            /** @return (\$size is My\Namespace\At ? My\Namespace\Vero : My\Namespace\Eos) */
+            public function diam(\$x) {}
+
+            /** @return ?My\Namespace\Accusam */
+            public function nonumy() {}
+
+            /** @return My\Namespace\Justo[My\Namespace\Dolores] */
+            public function eirmod() {}
         }
         CODE;
 
@@ -238,11 +272,34 @@ final class SymbolNameParserTest extends TestCase
 
         self::assertSame(
             [
-                'My\Namespace\Foo',
-                'My\Namespace\Bar',
-                'var',
-                'My\Namespace\Bat',
-                'param',
+                'My\Namespace\Lorem',
+                'My\Namespace\Ipsum',
+                'My\Namespace\Dolor',
+                'My\Namespace\Sit',
+                'My\Namespace\Amet',
+                'My\Namespace\Consetetur',
+                'My\Namespace\Sadipscing',
+                'My\Namespace\Elitr',
+                'My\Namespace\Sed',
+                'My\Namespace\Diam',
+                'My\Namespace\Nonumy',
+                'My\Namespace\Eirmod',
+                'My\Namespace\Tempor',
+                'My\Namespace\Invidunt',
+                'My\Namespace\Ut',
+                'My\Namespace\Labore',
+                'My\Namespace\Et',
+                'My\Namespace\Dolore',
+                'My\Namespace\Magna',
+                'My\Namespace\Aliquyam',
+                'My\Namespace\Voluptua',
+                'My\Namespace\Erat',
+                'My\Namespace\At',
+                'My\Namespace\Vero',
+                'My\Namespace\Eos',
+                'My\Namespace\Accusam',
+                'My\Namespace\Justo',
+                'My\Namespace\Dolores',
             ],
             $symbols
         );
