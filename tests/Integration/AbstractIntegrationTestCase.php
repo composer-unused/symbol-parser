@@ -82,8 +82,9 @@ class AbstractIntegrationTestCase extends TestCase
     /**
      * @param list<string> $autoloadTypes
      * @return array<SymbolInterface>
+     * @param list<string> $excludedDirs
      */
-    protected function loadConsumedFileSymbols(string $baseDir, array $autoloadTypes = null): array
+    protected function loadConsumedFileSymbols(string $baseDir, array $autoloadTypes = null, array $excludedDirs = []): array
     {
         $rootPackage = $this->loadPackage($baseDir);
 
@@ -111,7 +112,8 @@ class AbstractIntegrationTestCase extends TestCase
                 ),
                 new FileContentProvider()
             ),
-            $autoloadTypes
+            $autoloadTypes,
+            $excludedDirs
         );
 
         return iterator_to_array(

@@ -12,6 +12,7 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
     private const ONLY_FILE_DEPS = __DIR__ . '/../../../assets/TestProjects/OnlyFileDependencies';
     private const AUTOLOAD_FILES_REQUIRE = __DIR__ . '/../../../assets/TestProjects/AutoloadFilesWithRequire';
     private const ARRAY_NAMESPACE = __DIR__ . '/../../../assets/TestProjects/ArrayNamespace';
+    private const CLASSMAP_AUTOLOAD = __DIR__ . '/../../../assets/TestProjects/ClassmapAutoload';
 
     /**
      * @test
@@ -60,5 +61,15 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
         self::assertArrayHasKey('Ds\Vector', $symbols);
         self::assertArrayHasKey('json_encode', $symbols);
         self::assertArrayHasKey('array_keys', $symbols);
+    }
+
+    /**
+     * @test
+     */
+    public function itSkipsSymbolsInExcludedDirs(): void
+    {
+        $symbols = $this->loadConsumedFileSymbols(self::CLASSMAP_AUTOLOAD, [AutoloadType::CLASSMAP], ['Redis']);
+
+        self::assertCount(0, $symbols);
     }
 }
