@@ -11,7 +11,10 @@ use Symfony\Component\Finder\Finder;
 
 use function array_map;
 use function array_merge;
+use function is_array;
 use function preg_match;
+
+use const DIRECTORY_SEPARATOR;
 
 final class FileSymbolLoader implements SymbolLoaderInterface
 {
@@ -19,14 +22,18 @@ final class FileSymbolLoader implements SymbolLoaderInterface
     /** @var array<string> */
     private array $autoloadTypes;
     private ?string $baseDir;
+    /** @var list<string> */
+    private array $excludedDirs;
 
     /**
      * @param array<string> $autoloadTypes
+     * @param list<string> $excludedDirs
      */
-    public function __construct(FileSymbolProvider $fileSymbolProvider, array $autoloadTypes)
+    public function __construct(FileSymbolProvider $fileSymbolProvider, array $autoloadTypes, array $excludedDirs = [])
     {
         $this->fileSymbolProvider = $fileSymbolProvider;
         $this->autoloadTypes = $autoloadTypes;
+        $this->excludedDirs = $excludedDirs;
     }
 
     public function load(PackageInterface $package): Generator
@@ -54,7 +61,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             ->ignoreVCS(true)
             ->ignoreUnreadableDirs()
             ->followLinks()
-            ->exclude(['vendor']);
+            ->exclude($this->excludedDirs);
 
         $this->fileSymbolProvider->appendFiles($files->getIterator());
 
