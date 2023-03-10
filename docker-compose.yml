@@ -24,3 +24,11 @@ services:
       - .:/docker/symbol-parser:rw
       - ../contracts:/docker/contracts:rw
     tty: true
+
+  php8.2:
+    build: .docker/php8.2
+    container_name: symbol-parser-8.2
+    volumes:
+      - .:/docker/symbol-parser:rw
+      - ../contracts:/docker/contracts:rw
+    tty: true
