@@ -50,6 +50,8 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             array_merge(...$paths)
         );
 
+        $sourceFolders = array_filter($sourceFolders, [$this, 'filterExistingDir']);
+
         $finder = new Finder();
 
         $files = $finder
@@ -132,5 +134,16 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             static fn ($value): array => is_array($value) ? $value : [$value],
             $autoloadDefinition
         );
+    }
+
+    private function filterExistingDir(string $dir): bool
+    {
+        if (is_dir($dir)) {
+            return true;
+        }
+
+        $glob = glob($dir, (\defined('GLOB_BRACE') ? \GLOB_BRACE : 0) | \GLOB_ONLYDIR | \GLOB_NOSORT);
+
+        return $glob !== [];
     }
 }
