@@ -126,9 +126,9 @@ final class AnnotationStrategy implements StrategyInterface
             case ArrayShapeNode::class:
                 $symbols = [];
                 foreach ($node->items as $item) {
-                    $symbols[] = array_merge($symbols, $this->extractSymbolNamesFromPhpDocNode($item->valueType));
+                    $symbols[] = $this->extractSymbolNamesFromPhpDocNode($item->valueType);
                 }
-                return $symbols;
+                return array_merge(...$symbols);
             case UnionTypeNode::class:
             case IntersectionTypeNode::class:
                 return $this->extractSymbolNamesFromPhpDocNodeIterable($node->types);

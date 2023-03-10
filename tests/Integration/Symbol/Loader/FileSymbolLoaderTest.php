@@ -13,6 +13,7 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
     private const AUTOLOAD_FILES_REQUIRE = __DIR__ . '/../../../assets/TestProjects/AutoloadFilesWithRequire';
     private const ARRAY_NAMESPACE = __DIR__ . '/../../../assets/TestProjects/ArrayNamespace';
     private const CLASSMAP_AUTOLOAD = __DIR__ . '/../../../assets/TestProjects/ClassmapAutoload';
+    private const MISSING_DIRECTORY = __DIR__ . '/../../../assets/TestProjects/MissingDirectory';
 
     /**
      * @test
@@ -69,6 +70,16 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
     public function itSkipsSymbolsInExcludedDirs(): void
     {
         $symbols = $this->loadConsumedFileSymbols(self::CLASSMAP_AUTOLOAD, [AutoloadType::CLASSMAP], ['Redis']);
+
+        self::assertCount(0, $symbols);
+    }
+
+    /**
+     * @test
+     */
+    public function itSkipsNonExistingDirectories(): void
+    {
+        $symbols = $this->loadDefinedFileSymbols(self::MISSING_DIRECTORY, [AutoloadType::PSR4]);
 
         self::assertCount(0, $symbols);
     }
