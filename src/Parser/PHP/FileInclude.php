@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
 use PhpParser\Node\Expr\BinaryOp\Concat;
-use PhpParser\Node\Scalar;
 use PhpParser\Node\Scalar\String_;
 
 final class FileInclude
@@ -20,14 +19,17 @@ final class FileInclude
     private static function resolveConcatOperation(Concat $concat): string
     {
         $subPath = '';
-        /** @var String_ $rightOperand */
         $rightOperand = $concat->right;
 
         if ($concat->left instanceof Concat) {
             $subPath = self::resolveConcatOperation($concat->left);
         }
 
-        return $subPath . $rightOperand->value;
+        if (property_exists($rightOperand, 'value')) {
+            return $subPath . $rightOperand->value;
+        }
+
+        return $subPath;
     }
 
     public static function fromConcatOperation(Concat $concat): self
