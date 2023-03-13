@@ -31,9 +31,11 @@ analyse: ## Run phpstan analyse
 
 cs: ## Run php cs
 	docker compose run php$(PHP_VERSION) vendor/bin/phpcs
+	docker compose run php$(PHP_VERSION) composer normalize --dry-run
 
 csfix: ## Run phpcs fixer
 	docker compose run php$(PHP_VERSION) vendor/bin/phpcbf
+	docker compose run php$(PHP_VERSION) composer normalize
 
 box: ## Compile /build/composer-unused.phar
 	docker compose run php$(PHP_VERSION) php box.phar compile

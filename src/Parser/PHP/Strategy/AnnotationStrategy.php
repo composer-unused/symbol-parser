@@ -41,11 +41,7 @@ final class AnnotationStrategy implements StrategyInterface
 
     public function canHandle(Node $node): bool
     {
-        if ($node->getDocComment() === null) {
-            return false;
-        }
-
-        return true;
+        return $node->getDocComment() !== null;
     }
 
     /**
@@ -64,7 +60,7 @@ final class AnnotationStrategy implements StrategyInterface
 
         $phpDocTagNodes = array_filter(
             $phpDoc->children,
-            function (PhpDocChildNode $node): bool {
+            static function (PhpDocChildNode $node): bool {
                 return $node instanceof PhpDocTagNode;
             }
         );
