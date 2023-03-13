@@ -1,18 +1,32 @@
 {
     "name": "composer-unused/symbol-parser",
-    "type": "library",
     "description": "Toolkit to parse symbols from a composer package",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "composer",
         "symbol",
         "parser"
     ],
-    "homepage": "https://github.com/composer-unused/symbol-parser",
-    "license": "MIT",
     "authors": [
         {
             "name": "Andreas Frömer",
             "email": "composer-unused@icanhazstring.com"
+        }
+    ],
+    "homepage": "https://github.com/composer-unused/symbol-parser",
+    "support": {
+        "issues": "https://github.com/composer-unused/symbol-parser/issues",
+        "source": "https://github.com/composer-unused/symbol-parser"
+    },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://paypal.me/icanhazstring"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/icanhazstring"
         }
     ],
     "require": {
@@ -26,15 +40,12 @@
     },
     "require-dev": {
         "ext-ds": "*",
+        "ergebnis/composer-normalize": "^2.28",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.6.5",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.7.2",
         "symfony/serializer": "^5.4"
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -43,10 +54,15 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ComposerUnused\\SymbolParser\\Test\\Unit\\": "tests/Unit",
-            "ComposerUnused\\SymbolParser\\Test\\Integration\\": "tests/Integration",
-            "ComposerUnused\\SymbolParser\\Test\\Stubs\\": "tests/Stubs"
+            "ComposerUnused\\SymbolParser\\Test\\": "tests/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        },
+        "preferred-install": "dist",
+        "sort-packages": true
     },
     "scripts": {
         "analyse": "phpstan analyse --no-progress",
@@ -65,19 +81,5 @@
         "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
         "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
         "test": "Use \"phpunit\" to run the tests. See phpunit.xml"
-    },
-    "support": {
-        "issues": "https://github.com/composer-unused/symbol-parser/issues",
-        "source": "https://github.com/composer-unused/symbol-parser"
-    },
-    "funding": [
-        {
-            "type": "other",
-            "url": "https://paypal.me/icanhazstring"
-        },
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/icanhazstring"
-        }
-    ]
+    }
 }
