@@ -2,10 +2,62 @@
 
 ## [Unreleased] - TBA
 ### Fixed
-- Fixed issue where `UseStrategy`, `ExtendsParseStrategy` and `ImplementsParseStrategy` resulted in partial symbol names
 ### Added
-- Added `TypedAttributeStrategy` to recognize usage for consumed full qualified property types
-- Added `FullQualifiedParameterStrategy` to recognize usage for consumed full qualified parameter types
+### Changed
+### Removed
+
+## [0.2.0] - 2022-03-16
+### Fixed
+### Added
+* Feature: Handle name resolving with PHP-Parser's NameResolver by @eliashaeussler in https://github.com/composer-unused/symbol-parser/pull/92
+### Changed
+### Removed
+
+## [0.1.13] - 2022-03-16
+### Fixed
+* Add test cases to cover #66 by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/90
+* Fix: Match short namespace symbols by @eliashaeussler in https://github.com/composer-unused/symbol-parser/pull/91
+### Added
+### Changed
+### Removed
+
+## [0.1.12] - 2023-03-10
+### Fixed
+* Ignore non existing files/dirs by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/88
+* Add test cases to avoid undefined property calls by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/89
+### Added
+### Changed
+### Removed
+
+## [0.1.11] - 2022-12-22
+### Fixed
+### Added
+* feat: add support for excludedDirs into FileSymbolLoader by @simPod in https://github.com/composer-unused/symbol-parser/pull/74
+### Changed
+### Removed
+
+## [0.1.10] - 2022-10-07
+### Fixed
+* Fix composer.json constraint for symfony/finder by @Jean85 in https://github.com/composer-unused/symbol-parser/pull/44
+* Return empty symbol list when reflection could not be loaded by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/63
+### Added
+* Add AnnotationStrategy by @LeoVie in https://github.com/composer-unused/symbol-parser/pull/62
+### Changed
+### Removed
+
+## [0.1.9] - 2022-05-03
+### Fixed
+* Add interface recognition by @samuelnogueira in https://github.com/composer-unused/symbol-parser/pull/42
+### Added
+### Changed
+### Removed
+
+## [0.1.8] - 2022-03-09
+### Fixed
+### Added
+* Add ability to merge symbol names into FQN for consumed symbols by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/26
+* Resolve #11: Add TypedAttributeStrategy by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/33
+* Add FullQualifiedParameterStrategy by @icanhazstring in https://github.com/composer-unused/symbol-parser/pull/34
 ### Changed
 ### Removed
 
