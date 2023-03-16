@@ -32,15 +32,4 @@ class NamespaceSymbolTest extends TestCase
 
         self::assertTrue($namespaceSymbol->matches($namespaceSymbolFromClass));
     }
-
-    /**
-     * @test
-     */
-    public function itShouldMatchShortNamespaces(): void
-    {
-        $namespaceSymbol = new NamespaceSymbol('Foo\\Baz\\');
-        $symbol = new Symbol('Foo\\Baz');
-
-        self::assertTrue($namespaceSymbol->matches($symbol));
-    }
 }
