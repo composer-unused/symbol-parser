@@ -8,6 +8,7 @@ use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ConstStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -22,6 +23,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new DefinedSymbolCollector()
         );
 
@@ -49,6 +51,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new DefinedSymbolCollector()
         );
 
@@ -76,6 +79,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new DefinedSymbolCollector()
         );
 
@@ -101,6 +105,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new DefinedSymbolCollector()
         );
 
@@ -127,6 +132,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new DefinedSymbolCollector()
         );
 
@@ -150,6 +156,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new ConsumedSymbolCollector([new ConstStrategy()])
         );
 

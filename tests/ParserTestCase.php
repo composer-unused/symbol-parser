@@ -8,6 +8,7 @@ use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StrategyInterface;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -21,6 +22,7 @@ class ParserTestCase extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new ConsumedSymbolCollector($strategies)
         );
 
@@ -34,6 +36,7 @@ class ParserTestCase extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            new NameResolver(),
             new DefinedSymbolCollector()
         );
 

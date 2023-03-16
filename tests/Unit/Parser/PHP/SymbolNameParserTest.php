@@ -75,9 +75,10 @@ final class SymbolNameParserTest extends ParserTestCase
             $code
         );
 
-        self::assertCount(3, $symbols);
-        self::assertSame('My\NameSpace1\Bar', $symbols[0]);
+        self::assertCount(4, $symbols);
+        self::assertSame('My\NameSpace1', $symbols[0]);
         self::assertSame('B\NS\MyClass', $symbols[1]);
-        self::assertSame('Other\Namespace2\Baz', $symbols[2]);
+        self::assertSame('My\NameSpace1\Bar', $symbols[2]);
+        self::assertSame('Other\Namespace2\Baz', $symbols[3]);
     }
 }

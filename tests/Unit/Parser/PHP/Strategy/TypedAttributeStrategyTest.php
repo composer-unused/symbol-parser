@@ -37,7 +37,8 @@ final class TypedAttributeStrategyTest extends ParserTestCase
 
         $symbols = $this->parseConsumedSymbols([$this->stragety], $code);
 
-        self::assertCount(1, $symbols);
-        self::assertSame('My\Namespace\Bar', $symbols[0]);
+        self::assertCount(2, $symbols);
+        self::assertSame('Other\Fubar', $symbols[0]);
+        self::assertSame('My\Namespace\Bar', $symbols[1]);
     }
 }
