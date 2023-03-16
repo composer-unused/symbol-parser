@@ -23,6 +23,7 @@ use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use ComposerUnused\SymbolParser\Test\Stubs\Config;
 use ComposerUnused\SymbolParser\Test\Stubs\TestLink;
 use ComposerUnused\SymbolParser\Test\Stubs\TestPackage;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -67,6 +68,7 @@ class AbstractIntegrationTestCase extends TestCase
             new FileSymbolProvider(
                 new SymbolNameParser(
                     (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    new NameResolver(),
                     new DefinedSymbolCollector()
                 ),
                 new FileContentProvider()
@@ -96,6 +98,7 @@ class AbstractIntegrationTestCase extends TestCase
             new FileSymbolProvider(
                 new SymbolNameParser(
                     (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    new NameResolver(),
                     new ConsumedSymbolCollector(
                         [
                             new NewStrategy(),

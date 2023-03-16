@@ -10,6 +10,7 @@ use ComposerUnused\SymbolParser\Symbol\Provider\FileIterationInterface;
 use Generator;
 use PhpParser\Error;
 use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser;
 use SplFileInfo;
 
@@ -21,10 +22,11 @@ final class SymbolNameParser implements SymbolNameParserInterface
     private ?FileIterationInterface $fileIterator = null;
     private ?SplFileInfo $currentFile = null;
 
-    public function __construct(Parser $parser, SymbolCollectorInterface $visitor)
+    public function __construct(Parser $parser, NameResolver $nameResolver, SymbolCollectorInterface $visitor)
     {
         $this->parser = $parser;
         $this->traverser = new NodeTraverser();
+        $this->traverser->addVisitor($nameResolver);
         $this->traverser->addVisitor($visitor);
 
         $this->visitor = $visitor;
