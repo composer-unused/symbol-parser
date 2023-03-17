@@ -17,6 +17,7 @@ final class TestPackage implements PackageInterface
     public array $requires = [];
     /** @var array<string> */
     public array $suggests = [];
+    public ?string $url = null;
 
     public function getAutoload(): array
     {
@@ -26,6 +27,11 @@ final class TestPackage implements PackageInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
     }
 
     public function getRequires(): array
