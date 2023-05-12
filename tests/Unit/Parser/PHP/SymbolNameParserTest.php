@@ -81,4 +81,24 @@ final class SymbolNameParserTest extends ParserTestCase
         self::assertSame('My\NameSpace1\Bar', $symbols[2]);
         self::assertSame('Other\Namespace2\Baz', $symbols[3]);
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNotConsolidateDifferentNamespaces(): void
+    {
+        $code = <<<CODE
+        <?php
+
+        use My\Space\Using\ForeignUtility;
+        use ForeignUtility\SpecialClass;
+
+        CODE;
+
+        $symbols = $this->parseConsumedSymbols([new UseStrategy()], $code);
+
+        self::assertCount(2, $symbols);
+        self::assertSame('My\Space\Using\ForeignUtility', $symbols[0]);
+        self::assertSame('ForeignUtility\SpecialClass', $symbols[1]);
+    }
 }
