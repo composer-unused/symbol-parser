@@ -86,19 +86,19 @@ final class UsedExtensionSymbolStrategy implements StrategyInterface
     private function getNameFromNode(Node $node): string
     {
         if ($node instanceof Node\Name\FullyQualified) {
-            return implode('\\', $node->parts);
+            return implode('\\', $node->getParts());
         }
 
         if ($node instanceof Node\Stmt\UseUse) {
-            return $node->name->parts[0];
+            return $node->name->getParts()[0];
         }
 
         if ($node instanceof Node\Expr\ConstFetch) {
-            return $node->name->parts[0];
+            return $node->name->getParts()[0];
         }
 
         if ($node instanceof Node\Expr\FuncCall && $node->name instanceof Node\Name) {
-            return $node->name->parts[0];
+            return $node->name->getParts()[0];
         }
 
         return '';
