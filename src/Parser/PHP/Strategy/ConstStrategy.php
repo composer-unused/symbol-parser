@@ -18,6 +18,6 @@ final class ConstStrategy implements StrategyInterface
      */
     public function extractSymbolNames(Node $node): array
     {
-        return [$node->name->parts[0]];
+        return [$node->name->getParts()[0]];
     }
 }
