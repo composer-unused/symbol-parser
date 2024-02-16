@@ -89,5 +89,5 @@ jobs:
 
       - # https://github.com/sebastianbergmann/phpunit/tree/10.5
         name: Execute tests with PHPUnit 10
-        if: matrix.tools == 'phpunit:10.5'
+        if: matrix.tools == 'phpunit:10.5' && matrix.php != '7.4' && matrix.php != '8.0'
         run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-10.xml --no-progress
