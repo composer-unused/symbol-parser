@@ -26,7 +26,7 @@ final class SymbolNameTest extends TestCase
     /**
      * @return Generator<string, array<string|bool>>
      */
-    public function isPartOfDataProvider(): Generator
+    public static function isPartOfDataProvider(): Generator
     {
         yield 'A not part of B' => [
             'A', 'B', false
@@ -80,7 +80,7 @@ final class SymbolNameTest extends TestCase
     /**
      * @return Generator<string, array<string>>
      */
-    public function itMergesSymbolNameDataProvider(): Generator
+    public static function itMergesSymbolNameDataProvider(): Generator
     {
         yield 'A\B with B equals A\B' => [
             'A\B', 'B', 'A\B'

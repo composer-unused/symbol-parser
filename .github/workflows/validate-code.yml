@@ -66,6 +66,7 @@ jobs:
         php: [ "7.4", "8.0", "8.1", "8.2" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
+        tools: ["phpunit:9.6", "phpunit:10.5" ]
 
     steps:
       - name: Checkout
@@ -75,11 +76,18 @@ jobs:
         uses: shivammathur/setup-php@2.25.2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v2, pecl
+          tools: ${{ matrix.tools }}, composer:v2, pecl
           extensions: ds
 
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
 
-      - name: Execute tests
-        run: vendor/bin/phpunit --colors=always --coverage-text
+      - # https://github.com/sebastianbergmann/phpunit/tree/9.6
+        name: Execute tests with PHPUnit 9
+        if: matrix.tools == 'phpunit:9.6'
+        run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-9.xml
+
+      - # https://github.com/sebastianbergmann/phpunit/tree/10.5
+        name: Execute tests with PHPUnit 10
+        if: matrix.tools == 'phpunit:10.5'
+        run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-10.xml --no-progress
