@@ -5,3 +5,4 @@ cs-check.json
 .phpunit.result.cache
 /build/
 *.phar
+.php-cs-fixer.cache
