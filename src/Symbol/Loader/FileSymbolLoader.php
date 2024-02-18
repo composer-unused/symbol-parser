@@ -50,7 +50,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             array_merge(...$paths)
         );
 
-        $sourceFolders = array_filter($sourceFolders, [$this, 'filterExistingDir']);
+        $sourceFolders = array_filter($sourceFolders, fn (string $dir): bool => $this->filterExistingDir($dir));
 
         $finder = new Finder();
 

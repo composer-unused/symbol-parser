@@ -8,6 +8,7 @@ use ComposerUnused\Contracts\PackageInterface;
 use Generator;
 use ComposerUnused\SymbolParser\Symbol\NamespaceSymbol;
 
+use function array_keys;
 use function array_merge;
 
 final class PsrSymbolLoader implements SymbolLoaderInterface
@@ -19,7 +20,7 @@ final class PsrSymbolLoader implements SymbolLoaderInterface
             $package->getAutoload()['psr-0'] ?? []
         );
 
-        foreach ($namespaces as $namespace => $dir) {
+        foreach (array_keys($namespaces) as $namespace) {
             yield new NamespaceSymbol($namespace);
         }
     }
