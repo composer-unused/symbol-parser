@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
 use Closure;
-use ComposerUnused\SymbolParser\Symbol\SymbolName;
 use PhpParser\NodeVisitor;
 
 interface SymbolCollectorInterface extends NodeVisitor

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP\Strategy;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Name\FullyQualified;
 
 final class FullQualifiedParameterStrategy implements StrategyInterface
