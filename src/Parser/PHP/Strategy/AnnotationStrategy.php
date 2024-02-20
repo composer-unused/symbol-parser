@@ -24,6 +24,8 @@ use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
+use RecursiveIteratorIterator;
+use RecursiveArrayIterator;
 
 final class AnnotationStrategy implements StrategyInterface
 {
@@ -156,7 +158,7 @@ final class AnnotationStrategy implements StrategyInterface
      */
     private function flattenArray(array $array): array
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($array));
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
 
         return iterator_to_array($iterator, false);
     }

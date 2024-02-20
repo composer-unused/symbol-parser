@@ -11,10 +11,14 @@ use Symfony\Component\Finder\Finder;
 
 use function array_map;
 use function array_merge;
+use function defined;
 use function is_array;
 use function preg_match;
 
 use const DIRECTORY_SEPARATOR;
+use const GLOB_BRACE;
+use const GLOB_ONLYDIR;
+use const GLOB_NOSORT;
 
 final class FileSymbolLoader implements SymbolLoaderInterface
 {
@@ -142,7 +146,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
             return true;
         }
 
-        $glob = glob($dir, (\defined('GLOB_BRACE') ? \GLOB_BRACE : 0) | \GLOB_ONLYDIR | \GLOB_NOSORT);
+        $glob = glob($dir, (defined('GLOB_BRACE') ? GLOB_BRACE : 0) | GLOB_ONLYDIR | GLOB_NOSORT);
 
         return $glob !== [];
     }
