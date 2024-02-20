@@ -6,8 +6,7 @@ namespace ComposerUnused\SymbolParser\Symbol;
 
 final class NamespaceSymbol implements SymbolInterface
 {
-    /** @var string */
-    private $namespace;
+    private string $namespace;
 
     public function __construct(string $namespace)
     {

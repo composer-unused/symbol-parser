@@ -15,12 +15,9 @@ use Iterator;
 
 class FileSymbolProvider implements FileIterationInterface
 {
-    /** @var SymbolNameParserInterface */
-    private $parser;
-    /** @var FileContentProvider */
-    private $fileContentProvider;
-    /** @var AppendIterator */
-    private $fileIterator;
+    private SymbolNameParserInterface $parser;
+    private FileContentProvider $fileContentProvider;
+    private AppendIterator $fileIterator;
 
     public function __construct(SymbolNameParserInterface $parser, FileContentProvider $fileContentProvider)
     {

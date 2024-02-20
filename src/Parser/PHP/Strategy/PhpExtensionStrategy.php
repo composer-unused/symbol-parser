@@ -11,17 +11,16 @@ use ReflectionFunction;
 final class PhpExtensionStrategy implements StrategyInterface
 {
     /** @var array<string, array<string, int>> */
-    private $extensionConstants = [];
+    private array $extensionConstants = [];
 
     /** @var array<string, array<ReflectionFunction>> */
-    private $extensionFunctions = [];
+    private array $extensionFunctions = [];
 
     /** @var array<string, array<string, int>> */
-    private $extensionClasses = [];
+    private array $extensionClasses = [];
 
     /**
      * @param array<string> $extensions
-     * @throws ReflectionException
      */
     public function __construct(array $extensions, LoggerInterface $logger)
     {

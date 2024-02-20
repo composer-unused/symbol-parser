@@ -10,10 +10,10 @@ use Generator;
 final class CompositeSymbolLoader implements SymbolLoaderInterface
 {
     /** @var array<SymbolLoaderInterface> */
-    private $symbolLoader;
+    private array $symbolLoader;
 
     /** @var string|null */
-    private $baseDir;
+    private ?string $baseDir = null;
 
     /**
      * @param array<SymbolLoaderInterface> $symbolLoader
