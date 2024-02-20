@@ -12,7 +12,7 @@ use function iterator_to_array;
 final class SymbolList implements SymbolListInterface
 {
     /** @var array<SymbolInterface> */
-    private $items = [];
+    private array $items = [];
 
     /**
      * @param Traversable<SymbolInterface> $symbols
