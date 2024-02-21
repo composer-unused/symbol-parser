@@ -22,7 +22,7 @@ class SymbolNameParserTest extends TestCase
     public function itShouldParseClasses(): void
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
@@ -50,7 +50,7 @@ class SymbolNameParserTest extends TestCase
     public function itShouldParseInterfaces(): void
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
@@ -78,7 +78,7 @@ class SymbolNameParserTest extends TestCase
     public function itShouldParseFunctions(): void
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
@@ -104,7 +104,7 @@ class SymbolNameParserTest extends TestCase
     public function itShouldParseConstants(): void
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
@@ -131,7 +131,7 @@ class SymbolNameParserTest extends TestCase
     public function itShouldParseDefinedConstants(): void
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
@@ -155,7 +155,7 @@ class SymbolNameParserTest extends TestCase
     public function itShouldFindConsumedConstants(): void
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new ConsumedSymbolCollector([new ConstStrategy()])
         );

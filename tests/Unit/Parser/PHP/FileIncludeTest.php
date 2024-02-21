@@ -25,7 +25,7 @@ final class FileIncludeTest extends TestCase
         CODE;
 
         $factory = new ParserFactory();
-        $parser = $factory->create(ParserFactory::ONLY_PHP7);
+        $parser = $factory->createForNewestSupportedVersion();
 
         $nodes = $parser->parse($code);
         // @phpstan-ignore-next-line
@@ -47,7 +47,7 @@ final class FileIncludeTest extends TestCase
         CODE;
 
         $factory = new ParserFactory();
-        $parser = $factory->create(ParserFactory::ONLY_PHP7);
+        $parser = $factory->createForNewestSupportedVersion();
 
         $nodes = $parser->parse($code);
         // @phpstan-ignore-next-line
@@ -69,7 +69,7 @@ final class FileIncludeTest extends TestCase
         CODE;
 
         $factory = new ParserFactory();
-        $parser = $factory->create(ParserFactory::ONLY_PHP7);
+        $parser = $factory->createForNewestSupportedVersion();
 
         $nodes = $parser->parse($code);
         // @phpstan-ignore-next-line

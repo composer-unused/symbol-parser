@@ -21,7 +21,7 @@ class ParserTestCase extends TestCase
     public function parseConsumedSymbols(array $strategies, string $code): array
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new ConsumedSymbolCollector($strategies)
         );
@@ -35,7 +35,7 @@ class ParserTestCase extends TestCase
     public function parseDefinedSymbols(string $code): array
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
