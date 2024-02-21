@@ -29,7 +29,7 @@ class UseStrategy implements StrategyInterface
         if ($node instanceof GroupUse) {
             $prefix = $node->prefix->toString();
 
-            return array_map(static function (UseUse $use) use ($prefix) {
+            return array_map(static function ($use) use ($prefix) {
                 return $prefix . '\\' . $use->name->toString();
             }, $node->uses);
         }
