@@ -67,7 +67,7 @@ class AbstractIntegrationTestCase extends TestCase
         $fileLoader = new FileSymbolLoader(
             new FileSymbolProvider(
                 new SymbolNameParser(
-                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    (new ParserFactory())->createForNewestSupportedVersion(),
                     new NameResolver(),
                     new DefinedSymbolCollector()
                 ),
@@ -97,7 +97,7 @@ class AbstractIntegrationTestCase extends TestCase
         $fileLoader = new FileSymbolLoader(
             new FileSymbolProvider(
                 new SymbolNameParser(
-                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    (new ParserFactory())->createForNewestSupportedVersion(),
                     new NameResolver(),
                     new ConsumedSymbolCollector(
                         [
