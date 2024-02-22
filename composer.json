@@ -32,7 +32,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "composer-unused/contracts": "^0.3",
-        "nikic/php-parser": "^4.18 || ^5.0",
+        "nikic/php-parser": "^5.0.1",
         "phpstan/phpdoc-parser": "^1.23",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^1.1 || ^2 || ^3",
