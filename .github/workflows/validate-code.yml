@@ -66,7 +66,7 @@ jobs:
         php: [ "7.4", "8.0", "8.1", "8.2" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
-        tools: ["phpunit:9.6", "phpunit:10.5" ]
+        tools: ["phpunit:9.6.17", "phpunit:10.5" ]
 
     steps:
       - name: Checkout
@@ -84,10 +84,10 @@ jobs:
 
       - # https://github.com/sebastianbergmann/phpunit/tree/9.6
         name: Execute tests with PHPUnit 9
-        if: matrix.tools == 'phpunit:9.6'
-        run: vendor/bin/phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-9.xml
+        if: matrix.tools == 'phpunit:9.6.17'
+        run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-9.xml
 
       - # https://github.com/sebastianbergmann/phpunit/tree/10.5
         name: Execute tests with PHPUnit 10
         if: matrix.tools == 'phpunit:10.5' && matrix.php != '7.4' && matrix.php != '8.0'
-        run: vendor/bin/phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-10.xml --no-progress
+        run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-10.xml --no-progress
