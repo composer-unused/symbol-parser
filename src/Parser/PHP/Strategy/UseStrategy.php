@@ -7,7 +7,6 @@ namespace ComposerUnused\SymbolParser\Parser\PHP\Strategy;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\GroupUse;
 use PhpParser\Node\Stmt\Use_;
-use PhpParser\Node\Stmt\UseUse;
 
 class UseStrategy implements StrategyInterface
 {
