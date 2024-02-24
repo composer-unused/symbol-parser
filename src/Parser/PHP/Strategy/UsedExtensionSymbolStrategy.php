@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ComposerUnused\SymbolParser\Parser\PHP\Strategy;
 
 use PhpParser\Node;
