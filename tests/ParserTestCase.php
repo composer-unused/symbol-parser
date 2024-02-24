@@ -6,6 +6,7 @@ namespace ComposerUnused\SymbolParser\Test;
 
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\ParserErrorCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StrategyInterface;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -20,10 +21,13 @@ class ParserTestCase extends TestCase
      */
     public function parseConsumedSymbols(array $strategies, string $code): array
     {
+        $errorHandler = new ParserErrorCollector();
+
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->createForNewestSupportedVersion(),
-            new NameResolver(),
-            new ConsumedSymbolCollector($strategies)
+            new NameResolver($errorHandler),
+            new ConsumedSymbolCollector($strategies),
+            $errorHandler
         );
 
         return iterator_to_array($symbolNameParser->parseSymbolNames($code));
