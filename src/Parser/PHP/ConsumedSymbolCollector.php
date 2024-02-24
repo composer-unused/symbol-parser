@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StrategyInterface;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use ComposerUnused\SymbolParser\Symbol\SymbolName;
 use PhpParser\Node;
 
 use function array_merge;
 use function array_unique;
+use function count;
 
 /**
  * Collect consumed symbols.
@@ -56,6 +58,12 @@ class ConsumedSymbolCollector extends AbstractCollector
 
     public function getSymbolNames(): array
     {
+        foreach ($this->strategies as $strategy) {
+            if ($strategy instanceof UseStrategy && count($this->strategies) === 1) {
+                return array_unique($this->symbols);
+            }
+        }
+
         $uniqueNames = array_map(
             static fn(string $name) => new SymbolName($name),
             array_unique($this->symbols)
