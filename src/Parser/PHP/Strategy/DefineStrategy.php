@@ -55,7 +55,11 @@ final class DefineStrategy implements StrategyInterface
             return [$constant];
         }
 
-        if ($node instanceof Node\Stmt\Expression && $node->expr instanceof Node\Expr\FuncCall) {
+        if (
+            $node instanceof Node\Stmt\Expression &&
+            $node->expr instanceof Node\Expr\FuncCall &&
+            $node->expr->name instanceof Node\Name
+        ) {
             /** @var Node\Name $expressionName */
             $expressionName = $node->expr->name;
             $functionName = $expressionName->getParts()[0] ?? null;
