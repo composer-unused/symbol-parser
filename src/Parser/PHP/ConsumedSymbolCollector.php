@@ -21,9 +21,9 @@ use function array_unique;
 class ConsumedSymbolCollector extends AbstractCollector
 {
     /** @var array<string> */
-    private array $symbols = [];
+    protected array $symbols = [];
     /** @var array<StrategyInterface> */
-    private array $strategies = [];
+    protected array $strategies;
 
     /**
      * @param array<StrategyInterface> $strategies

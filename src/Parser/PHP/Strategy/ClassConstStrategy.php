@@ -7,6 +7,8 @@ namespace ComposerUnused\SymbolParser\Parser\PHP\Strategy;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
 
+use function sprintf;
+
 final class ClassConstStrategy implements StrategyInterface
 {
     public function canHandle(Node $node): bool
@@ -19,7 +21,11 @@ final class ClassConstStrategy implements StrategyInterface
             return false;
         }
 
-        return $node->class->isFullyQualified() || $node->class->isQualified();
+        if (!$node->name instanceof Node\Identifier) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -28,9 +34,6 @@ final class ClassConstStrategy implements StrategyInterface
      */
     public function extractSymbolNames(Node $node): array
     {
-        /** @var Node\Name $class */
-        $class = $node->class;
-
-        return [$class->toString()];
+        return [sprintf('%s::%s', $node->class, $node->name)];
     }
 }

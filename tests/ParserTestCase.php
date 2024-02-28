@@ -6,10 +6,10 @@ namespace ComposerUnused\SymbolParser\Test;
 
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\NameResolver;
 use ComposerUnused\SymbolParser\Parser\PHP\ParserErrorCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StrategyInterface;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
-use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 
