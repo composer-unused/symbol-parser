@@ -34,6 +34,6 @@ final class ClassConstStrategy implements StrategyInterface
      */
     public function extractSymbolNames(Node $node): array
     {
-        return [sprintf('%s::%s', $node->class, $node->name)];
+        return [sprintf('%s\%s', $node->class, $node->name)];
     }
 }
