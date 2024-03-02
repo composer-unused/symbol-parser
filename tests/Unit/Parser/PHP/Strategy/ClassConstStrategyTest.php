@@ -63,8 +63,8 @@ class ClassConstStrategyTest extends ParserTestCase
         $symbols = $this->parseConsumedSymbols([$this->strategy], $code);
 
         self::assertCount(3, $symbols);
-        self::assertSame('My\Space\Base::BAR', $symbols[0]);
-        self::assertSame('static::BAR', $symbols[1]);
-        self::assertSame('My\Space\Foo::BAR', $symbols[2]);
+        self::assertSame('My\Space\Base\BAR', $symbols[0]);
+        self::assertSame('static\BAR', $symbols[1]);
+        self::assertSame('My\Space\Foo\BAR', $symbols[2]);
     }
 }
