@@ -23,14 +23,18 @@ class ConsumedSymbolCollector extends AbstractCollector
     /** @var array<string> */
     private array $symbols = [];
     /** @var array<StrategyInterface> */
-    private array $strategies;
+    private array $strategies = [];
 
     /**
      * @param array<StrategyInterface> $strategies
      */
     public function __construct(array $strategies)
     {
-        $this->strategies = $strategies;
+        foreach ($strategies as $strategy) {
+            if ($strategy instanceof StrategyInterface) {
+                $this->strategies[] = $strategy;
+            }
+        }
     }
 
     public function enterNode(Node $node)
