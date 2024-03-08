@@ -91,3 +91,23 @@ jobs:
         name: Execute tests with PHPUnit 10
         if: matrix.tools == 'phpunit:10.5' && matrix.php != '7.4' && matrix.php != '8.0'
         run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-10.xml --no-progress
+
+  # This is a "trick", a meta task that does not change, and we can use it in
+  # the protected branch rules as opposed to the tests ones above which
+  # may change regularly.
+  validate-code:
+    name: Code Requirement Check
+    runs-on: ubuntu-latest
+    needs:
+      - coding-standard
+      - static-analysis
+      - unit-tests
+    if: always()
+    steps:
+      - name: Successful run
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: exit 0
+
+      - name: Failing run
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
