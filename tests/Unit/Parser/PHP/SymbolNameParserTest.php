@@ -81,4 +81,28 @@ final class SymbolNameParserTest extends ParserTestCase
         self::assertSame('My\NameSpace1\Bar', $symbols[2]);
         self::assertSame('Other\Namespace2\Baz', $symbols[3]);
     }
+
+    /**
+     * @test
+     * @link https://github.com/composer-unused/symbol-parser/issues/122
+     */
+    public function itShouldParseDefinedClosureDirectCalls(): void
+    {
+        $code = <<<'CODE'
+        <?php
+        $handlers = [
+            function () { echo "Hello Handler\n"; },
+        ];
+
+        foreach ($handlers as $handler) {
+            if (is_callable($handler)) {
+                $handler();
+            }
+        }
+        CODE;
+
+        $symbols = $this->parseDefinedSymbols($code);
+
+        self::assertCount(0, $symbols);
+    }
 }
