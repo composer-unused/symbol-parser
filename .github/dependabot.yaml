@@ -12,16 +12,24 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: "composer"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     versioning-strategy: "increase"
+    allow:
+      - dependency-type: "development"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
 
   - commit-message:
       include: "scope"
       prefix: "github-actions"
     directory: "/"
-    labels:
-      - "dependency"
     open-pull-requests-limit: 10
     package-ecosystem: "github-actions"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
