@@ -105,4 +105,48 @@ final class SymbolNameParserTest extends ParserTestCase
 
         self::assertCount(0, $symbols);
     }
+
+    /**
+     * @test
+     * @link https://github.com/composer-unused/symbol-parser/issues/136
+     */
+    public function itShouldParseDefinedClassLikeSymbols(): void
+    {
+        $code = <<<CODE
+        <?php
+        // @link https://www.php.net/manual/en/language.oop5.traits.php
+
+        trait ezcReflectionReturnInfo {
+            function getReturnType() { /*1*/ }
+            function getReturnDescription() { /*2*/ }
+        }
+
+        class ezcReflectionMethod extends ReflectionMethod {
+            use ezcReflectionReturnInfo;
+            /* ... */
+        }
+
+        class ezcReflectionFunction extends ReflectionFunction {
+            use ezcReflectionReturnInfo;
+            /* ... */
+        }
+
+        // @link https://www.php.net/manual/en/language.enumerations.basics.php
+        enum Suit
+        {
+            case Hearts;
+            case Diamonds;
+            case Clubs;
+            case Spades;
+        }
+        CODE;
+
+        $symbols = $this->parseDefinedSymbols($code);
+
+        self::assertCount(4, $symbols);
+        self::assertSame('ezcReflectionReturnInfo', $symbols[0]);
+        self::assertSame('ezcReflectionMethod', $symbols[1]);
+        self::assertSame('ezcReflectionFunction', $symbols[2]);
+        self::assertSame('Suit', $symbols[3]);
+    }
 }
