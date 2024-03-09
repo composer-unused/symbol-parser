@@ -38,8 +38,7 @@ final class DefinedSymbolCollector extends AbstractCollector
         }
 
         if (
-            $node instanceof Node\Stmt\Class_ ||
-            $node instanceof Node\Stmt\Interface_
+            $node instanceof Node\Stmt\ClassLike
         ) {
             $this->classes[] = $this->namespace . $node->name;
 
