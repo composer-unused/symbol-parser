@@ -12,6 +12,10 @@ abstract class AbstractCollector extends NodeVisitorAbstract implements SymbolCo
 {
     private ?Closure $includeCallback = null;
 
+
+    /** @var array<string, bool> Index of files already visited. */
+    private static array $visited = [];
+
     public function setFileIncludeCallback(Closure $includeCallback): void
     {
         $this->includeCallback = $includeCallback;
@@ -36,11 +40,18 @@ abstract class AbstractCollector extends NodeVisitorAbstract implements SymbolCo
 
         switch (get_class($expr)) {
             case Node\Scalar\String_::class:
-                ($this->includeCallback)(FileInclude::fromScalar($expr));
+                $fileInclude = FileInclude::fromScalar($expr);
                 break;
             case Node\Expr\BinaryOp\Concat::class:
-                ($this->includeCallback)(FileInclude::fromConcatOperation($expr));
+                $fileInclude = FileInclude::fromConcatOperation($expr);
                 break;
         }
+
+        if (isset($fileInclude, self::$visited[$fileInclude->getPath()])) {
+            return;
+        }
+        self::$visited[$fileInclude->getPath()] = true;
+
+        ($this->includeCallback)($fileInclude);
     }
 }
