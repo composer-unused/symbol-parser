@@ -14,6 +14,7 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
     private const ARRAY_NAMESPACE = __DIR__ . '/../../../assets/TestProjects/ArrayNamespace';
     private const CLASSMAP_AUTOLOAD = __DIR__ . '/../../../assets/TestProjects/ClassmapAutoload';
     private const MISSING_DIRECTORY = __DIR__ . '/../../../assets/TestProjects/MissingDirectory';
+    private const SELF_REFERENCING = __DIR__ . '/../../../assets/TestProjects/SelfReferencing';
 
     /**
      * @test
@@ -80,6 +81,16 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
     public function itSkipsNonExistingDirectories(): void
     {
         $symbols = $this->loadDefinedFileSymbols(self::MISSING_DIRECTORY, [AutoloadType::PSR4]);
+
+        self::assertCount(0, $symbols);
+    }
+
+    /**
+     * @test
+     */
+    public function itSkipsSelfReferencingFiles(): void
+    {
+        $symbols = $this->loadDefinedFileSymbols(self::SELF_REFERENCING, [AutoloadType::FILES]);
 
         self::assertCount(0, $symbols);
     }
