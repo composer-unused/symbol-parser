@@ -45,9 +45,11 @@ abstract class AbstractCollector extends NodeVisitorAbstract implements SymbolCo
             case Node\Expr\BinaryOp\Concat::class:
                 $fileInclude = FileInclude::fromConcatOperation($expr);
                 break;
+            default:
+                return;
         }
 
-        if (isset($fileInclude, self::$visited[$fileInclude->getPath()])) {
+        if (isset(self::$visited[$fileInclude->getPath()])) {
             return;
         }
         self::$visited[$fileInclude->getPath()] = true;
