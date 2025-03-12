@@ -24,6 +24,7 @@ use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
+use PHPStan\PhpDocParser\ParserConfig;
 use RecursiveIteratorIterator;
 use RecursiveArrayIterator;
 
@@ -34,11 +35,19 @@ final class AnnotationStrategy implements StrategyInterface
 
     public function __construct(
         ConstExprParser $constExprParser,
-        Lexer $lexer
+        Lexer $lexer,
+        ParserConfig $parserConfig = null
     ) {
         $this->lexer = $lexer;
-        $typeParser = new TypeParser($constExprParser);
-        $this->phpDocParser = new PhpDocParser($typeParser, $constExprParser);
+        if ($parserConfig !== null) {
+            $typeParser = new TypeParser($parserConfig, $constExprParser);
+            $this->phpDocParser = new PhpDocParser($parserConfig, $typeParser, $constExprParser);
+        } else {
+            // @phpstan-ignore-next-line
+            $typeParser = new TypeParser($constExprParser);
+            // @phpstan-ignore-next-line
+            $this->phpDocParser = new PhpDocParser($typeParser, $constExprParser);
+        }
     }
 
     public function canHandle(Node $node): bool
