@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace ComposerUnused\SymbolParser\Test\Unit\Parser\PHP\Strategy;
 
+use Composer\InstalledVersions;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\AnnotationStrategy;
 use ComposerUnused\SymbolParser\Test\ParserTestCase;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
+use PHPStan\PhpDocParser\ParserConfig;
 
 final class AnnotationStrategyTest extends ParserTestCase
 {
@@ -15,9 +17,25 @@ final class AnnotationStrategyTest extends ParserTestCase
 
     protected function setUp(): void
     {
+        $phpStanPhpDocParserVersion = InstalledVersions::getVersion('phpstan/phpdoc-parser');
+        if (!is_string($phpStanPhpDocParserVersion)) {
+            throw new \RuntimeException('Unable to get phpstan/phpdoc-parser version');
+        }
+        $phpStanPhpDocParserV2 = substr($phpStanPhpDocParserVersion, 0, 1) === '2';
+        $arguments = [];
+        if ($phpStanPhpDocParserV2) {
+            $parserConfig = new ParserConfig(['lines' => true, 'indexes' => true, 'comments' => true]);
+            $arguments[] = new ConstExprParser($parserConfig);
+            $arguments[] = new Lexer($parserConfig);
+            $arguments[] = $parserConfig;
+        } else {
+            // @phpstan-ignore-next-line
+            $arguments[] = new ConstExprParser();
+            // @phpstan-ignore-next-line
+            $arguments[] = new Lexer();
+        }
         $this->strategy = new AnnotationStrategy(
-            new ConstExprParser(),
-            new Lexer()
+            ...$arguments,
         );
     }
 
