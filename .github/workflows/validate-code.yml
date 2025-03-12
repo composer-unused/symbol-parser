@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", "8.2" ]
+        php: [ "7.4", "8.0", "8.1", "8.2", "8.3", "8.4" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         tools: ["phpunit:9.6.17", "phpunit:10.5" ]
