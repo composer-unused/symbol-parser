@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP\Strategy;
 
 use PhpParser\Node;
+use PHPStan\PhpDocParser\Ast\PhpDoc\Doctrine\DoctrineTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode;
@@ -151,6 +152,8 @@ final class AnnotationStrategy implements StrategyInterface
                     $this->extractSymbolNamesFromPhpDocNode($node->type),
                     $this->extractSymbolNamesFromPhpDocNode($node->offset),
                 );
+            case DoctrineTagValueNode::class:
+                return [str_replace('@', '', $node->annotation->name)];
         }
 
         if (property_exists($node, 'type')) {
