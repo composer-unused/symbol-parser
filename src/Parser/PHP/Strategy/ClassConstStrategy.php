@@ -21,10 +21,6 @@ final class ClassConstStrategy implements StrategyInterface
             return false;
         }
 
-        if (!$node->name instanceof Node\Identifier) {
-            return false;
-        }
-
         return true;
     }
 
@@ -34,6 +30,9 @@ final class ClassConstStrategy implements StrategyInterface
      */
     public function extractSymbolNames(Node $node): array
     {
-        return [sprintf('%s\%s', $node->class, $node->name)];
+        /** @var Node\Name $class */
+        $class = $node->class;
+
+        return [$class->name];
     }
 }
