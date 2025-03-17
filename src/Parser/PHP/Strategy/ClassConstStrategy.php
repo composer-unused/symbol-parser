@@ -33,10 +33,6 @@ final class ClassConstStrategy implements StrategyInterface
         /** @var Node\Name $class */
         $class = $node->class;
 
-        if (property_exists($class, 'name') === true) {
-            return [$class->name];
-        }
-
-        return [implode('\\', $class->getParts())];
+        return [$class->name];
     }
 }
