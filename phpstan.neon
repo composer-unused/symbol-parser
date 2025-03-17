@@ -5,6 +5,7 @@ parameters:
         - %currentWorkingDirectory%/tests/assets
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
+    treatPhpDocTypesAsCertain: false
     paths:
         - src/
         - tests/
