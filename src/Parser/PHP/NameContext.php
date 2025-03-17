@@ -17,8 +17,13 @@ class NameContext extends \PhpParser\NameContext
     public function getResolvedName(Name $name, int $type): ?Name
     {
         if ($type === Stmt\Use_::TYPE_NORMAL && $name->isSpecialClassName()) {
-            // Try to resolve aliases
-            return $this->aliases[$type][strtolower($name->name)] ?? null;
+            if (property_exists($name, 'name')) {
+                $className = $name->name;
+            } else {
+                $className = $name->getParts()[0];
+            }
+
+            return $this->aliases[$type][strtolower($className)] ?? null;
         }
         return parent::getResolvedName($name, $type);
     }
