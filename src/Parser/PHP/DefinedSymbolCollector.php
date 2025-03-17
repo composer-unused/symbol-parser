@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ComposerUnused\SymbolParser\Parser\PHP;
 
 use PhpParser\Node;
-use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
 
 use function array_merge;
 
@@ -28,7 +28,7 @@ final class DefinedSymbolCollector extends AbstractCollector
     /** @var array<string> */
     private array $classes = [];
 
-    public function enterNode(Node $node)
+    public function enterNode(Node $node): ?int
     {
         $this->followIncludes($node);
 
@@ -37,25 +37,23 @@ final class DefinedSymbolCollector extends AbstractCollector
             return null;
         }
 
-        if (
-            $node instanceof Node\Stmt\ClassLike
-        ) {
+        if ($node instanceof Node\Stmt\ClassLike) {
             $this->classes[] = $this->namespace . $node->name;
 
             // We only need the class name, no need to dig further into the class
             // as there is no more symbol to be defined which can't be checked against
             // the class name already (e.g. public constants)
-            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            return NodeVisitor::DONT_TRAVERSE_CHILDREN;
         }
 
         if ($node instanceof Node\Stmt\Function_) {
             $this->functions[] = $this->namespace . $node->name;
-            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            return NodeVisitor::DONT_TRAVERSE_CHILDREN;
         }
 
         if ($node instanceof Node\Const_) {
             $this->constants[] = $this->namespace . $node->name;
-            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            return NodeVisitor::DONT_TRAVERSE_CHILDREN;
         }
 
         if (
@@ -65,7 +63,7 @@ final class DefinedSymbolCollector extends AbstractCollector
         ) {
             /** @var Node\Name $expressionName */
             $expressionName = $node->expr->name;
-            $functionName = $expressionName->getParts()[0] ?? null;
+            $functionName = $expressionName->getParts()[0];
             $firstArgument = $node->expr->args[0];
             assert($firstArgument instanceof Node\Arg);
 
@@ -74,7 +72,7 @@ final class DefinedSymbolCollector extends AbstractCollector
                 $this->constants[] = $firstArgumentValue->value;
             }
 
-            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+            return NodeVisitor::DONT_TRAVERSE_CHILDREN;
         }
 
         return null;

@@ -45,6 +45,7 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $paths = [];
 
         foreach ($this->autoloadTypes as $autoloadType) {
+            /** @var array<array-key, string|list<string>> $autoloadDefinition */
             $autoloadDefinition = $package->getAutoload()[$autoloadType] ?? [];
             $autoloadPaths = $this->normalizePsrStructure($autoloadDefinition);
             $paths[] = $this->resolvePackageSourcePath($autoloadPaths);

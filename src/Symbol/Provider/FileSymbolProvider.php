@@ -17,6 +17,7 @@ class FileSymbolProvider implements FileIterationInterface
 {
     private SymbolNameParserInterface $parser;
     private FileContentProvider $fileContentProvider;
+    /* @phpstan-ignore-next-line */
     private AppendIterator $fileIterator;
 
     public function __construct(SymbolNameParserInterface $parser, FileContentProvider $fileContentProvider)

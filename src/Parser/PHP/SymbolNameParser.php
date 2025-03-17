@@ -19,7 +19,7 @@ final class SymbolNameParser implements SymbolNameParserInterface
     private Parser $parser;
     private NodeTraverser $traverser;
     private SymbolCollectorInterface $visitor;
-    private ?ErrorHandler $errorHandler;
+    private ErrorHandler $errorHandler;
     private ?FileIterationInterface $fileIterator = null;
     private ?SplFileInfo $currentFile = null;
 

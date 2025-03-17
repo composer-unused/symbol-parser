@@ -62,7 +62,7 @@ final class DefineStrategy implements StrategyInterface
         ) {
             /** @var Node\Name $expressionName */
             $expressionName = $node->expr->name;
-            $functionName = $expressionName->getParts()[0] ?? null;
+            $functionName = $expressionName->getParts()[0];
             $firstArgument = $node->expr->args[0];
             if ($firstArgument instanceof Node\Arg) {
                 $firstArgumentValue = $firstArgument->value;
