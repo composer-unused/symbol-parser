@@ -37,7 +37,7 @@ final class AnnotationStrategy implements StrategyInterface
     public function __construct(
         ConstExprParser $constExprParser,
         Lexer $lexer,
-        ParserConfig $parserConfig = null
+        ?ParserConfig $parserConfig = null
     ) {
         $this->lexer = $lexer;
         if ($parserConfig !== null) {

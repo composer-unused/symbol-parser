@@ -50,8 +50,8 @@ class AbstractIntegrationTestCase extends TestCase
      */
     protected function loadDefinedFileSymbols(
         string $baseDir,
-        array $autoloadTypes = null,
-        string $packageName = null
+        ?array $autoloadTypes = null,
+        ?string $packageName = null
     ): array {
         if ($packageName === null) {
             $package = $this->loadPackage($baseDir);
@@ -86,7 +86,7 @@ class AbstractIntegrationTestCase extends TestCase
      * @return array<SymbolInterface>
      * @param list<string> $excludedDirs
      */
-    protected function loadConsumedFileSymbols(string $baseDir, array $autoloadTypes = null, array $excludedDirs = []): array
+    protected function loadConsumedFileSymbols(string $baseDir, ?array $autoloadTypes = null, array $excludedDirs = []): array
     {
         $rootPackage = $this->loadPackage($baseDir);
 
