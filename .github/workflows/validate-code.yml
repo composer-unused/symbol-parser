@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ "ubuntu-latest" ]
+        os: [ "blacksmith-4vcpu-ubuntu-2204" ]
         php: [ "8.1" ]
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [ "8.1", "8.2", "8.3", "8.4" ]
-        os: [ "ubuntu-latest" ]
+        os: [ "blacksmith-4vcpu-ubuntu-2204" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,7 +64,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [ "7.4", "8.0", "8.1", "8.2", "8.3", "8.4" ]
-        os: [ "ubuntu-latest" ]
+        os: [ "blacksmith-4vcpu-ubuntu-2204" ]
         experimental: [ false ]
         tools: ["phpunit:9.6.17", "phpunit:10.5" ]
 
@@ -97,7 +97,7 @@ jobs:
   # may change regularly.
   validate-code:
     name: Code Requirement Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     needs:
       - coding-standard
       - static-analysis
