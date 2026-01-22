@@ -64,6 +64,9 @@ final class DefinedSymbolCollector extends AbstractCollector
             /** @var Node\Name $expressionName */
             $expressionName = $node->expr->name;
             $functionName = $expressionName->getParts()[0];
+            if (! array_key_exists(0, $node->expr->args)) {
+                return null;
+            }
             $firstArgument = $node->expr->args[0];
             assert($firstArgument instanceof Node\Arg);
 
