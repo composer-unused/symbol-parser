@@ -58,7 +58,9 @@ final class FileSymbolLoader implements SymbolLoaderInterface
         $sourceFolders = array_filter($sourceFolders, fn (string $dir): bool => $this->filterExistingDir($dir));
 
         $finder = new Finder();
-
+        if (empty($sourceFolders) && empty($sourceFiles)) {
+            return;
+        }
         $files = $finder
             ->files()
             ->name('*.php')
