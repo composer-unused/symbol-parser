@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.33.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.33.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
@@ -63,34 +63,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", "8.2", "8.3", "8.4" ]
+        php: [ "8.1", "8.2", "8.3", "8.4" ]
         os: [ "blacksmith-4vcpu-ubuntu-2204" ]
         experimental: [ false ]
-        tools: ["phpunit:9.6.17", "phpunit:10.5" ]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.33.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: ${{ matrix.tools }}, composer:v2, pecl
+          tools: composer:v2, pecl
           extensions: ds
+          coverage: xdebug
 
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
 
-      - # https://github.com/sebastianbergmann/phpunit/tree/9.6
-        name: Execute tests with PHPUnit 9
-        if: matrix.tools == 'phpunit:9.6.17'
-        run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-9.xml
-
-      - # https://github.com/sebastianbergmann/phpunit/tree/10.5
-        name: Execute tests with PHPUnit 10
-        if: matrix.tools == 'phpunit:10.5' && matrix.php != '7.4' && matrix.php != '8.0'
-        run: phpunit --colors=always --coverage-text --do-not-cache-result --configuration=phpunit-10.xml --no-progress
+      - name: Execute tests
+        run: composer test -- --do-not-cache-result
 
   # This is a "trick", a meta task that does not change, and we can use it in
   # the protected branch rules as opposed to the tests ones above which
