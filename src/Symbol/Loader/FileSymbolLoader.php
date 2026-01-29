@@ -57,22 +57,21 @@ final class FileSymbolLoader implements SymbolLoaderInterface
 
         $sourceFolders = array_filter($sourceFolders, fn (string $dir): bool => $this->filterExistingDir($dir));
 
-        $finder = new Finder();
-        if (empty($sourceFolders) && empty($sourceFiles)) {
-            return;
-        }
-        $files = $finder
-            ->files()
-            ->name('*.php')
-            ->in($sourceFolders)
-            ->append($sourceFiles)
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true)
-            ->ignoreUnreadableDirs()
-            ->followLinks()
-            ->exclude($this->excludedDirs);
+        if (!(empty($sourceFolders) && empty($sourceFiles))) {
+            $finder = new Finder();
+            $files = $finder
+                ->files()
+                ->in($sourceFolders)
+                ->append($sourceFiles)
+                ->name('*.php')
+                ->ignoreDotFiles(true)
+                ->ignoreVCS(true)
+                ->ignoreUnreadableDirs()
+                ->followLinks()
+                ->exclude($this->excludedDirs);
 
-        $this->fileSymbolProvider->appendFiles($files->getIterator());
+            $this->fileSymbolProvider->appendFiles($files->getIterator());
+        }
 
         yield from $this->fileSymbolProvider->provide();
     }
