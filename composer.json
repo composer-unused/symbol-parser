@@ -42,7 +42,7 @@
         "ext-ds": "*",
         "ergebnis/composer-normalize": "^2.49",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.6.10 || ^10.5",
+        "phpunit/phpunit": "^10.5",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^4.0.1",
         "symfony/serializer": "^5.4 || ^6.0 || ^7.0 || ^8.0",
@@ -74,13 +74,13 @@
         ],
         "cs-check": "phpcs --parallel=50",
         "cs-fix": "phpcbf --parallel=50",
-        "test": "phpunit --configuration phpunit-10.xml"
+        "test": "@php -dxdebug.mode=coverage vendor/bin/phpunit --colors=always --coverage-text --configuration phpunit.xml"
     },
     "scripts-descriptions": {
         "analyse": "Use \"phpstan\" to the analyse static code. See phpstan.neon",
         "check": "Check the coding covention and run the tests",
         "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
         "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
-        "test": "Use \"phpunit\" to run the tests. See phpunit-10.xml"
+        "test": "Use \"phpunit\" to run the tests. See phpunit.xml"
     }
 }
