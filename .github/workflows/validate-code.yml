@@ -25,6 +25,11 @@ jobs:
           tools: composer:v2, pecl
           extensions: ds
 
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
+
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
@@ -49,6 +54,11 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
           extensions: ds
+
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
 
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -78,6 +88,11 @@ jobs:
           tools: composer:v2, pecl
           extensions: ds
           coverage: xdebug
+
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
 
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}

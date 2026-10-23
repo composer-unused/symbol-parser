@@ -88,6 +88,34 @@ final class SymbolNameParserTest extends ParserTestCase
 
     /**
      * @test
+     * @link https://github.com/composer-unused/composer-unused/issues/740
+     */
+    public function itShouldKeepFullyQualifiedSymbolsWhenConsolidating(): void
+    {
+        $code = <<<CODE
+        <?php
+
+        namespace Testing;
+
+        use Uri\InvalidUriException;
+        use Uri\Rfc3986\Uri;
+        use Uri\WhatWg\Url;
+        CODE;
+
+        $symbols = $this->parseConsumedSymbols(
+            [
+                new UseStrategy(),
+            ],
+            $code
+        );
+
+        self::assertContains('Uri\InvalidUriException', $symbols);
+        self::assertContains('Uri\Rfc3986\Uri', $symbols);
+        self::assertContains('Uri\WhatWg\Url', $symbols);
+    }
+
+    /**
+     * @test
      * @link https://github.com/composer-unused/symbol-parser/issues/122
      */
     public function itShouldParseDefinedClosureDirectCalls(): void
